@@ -33,7 +33,7 @@ class PayPalApi
     /**
      * paymentProfile
      *
-     * @var \HGON\HgonTemplate\Domain\Model\PaymentProfile
+     * @var \HGON\HgonPayment\Domain\Model\PaymentProfile
      */
     protected $paymentProfile;
 
@@ -61,7 +61,7 @@ class PayPalApi
      *
      * @var string
      */
-    protected $cacheIdentifier = "hgon_template";
+    protected $cacheIdentifier = "hgon_payment";
 
     /**
      * cacheDataIdentifier
@@ -155,16 +155,16 @@ class PayPalApi
      * @param boolean $noShipping
      * @param boolean $addressOverride
      *
-     * @return \HGON\HgonTemplate\Domain\Model\PaymentProfile
+     * @return \HGON\HgonPayment\Domain\Model\PaymentProfile
      */
     protected function setCheckoutExperience ($brandName = 'HGON e.V - 5', $logoImageUrl = 'EXT:hgon_template/Resources/Public/Images/PayPal/logo-hgon.svg', $localeCode = 'DE', $allowNote = true, $noShipping = false, $addressOverride = true)
     {
         // Either: Check for existing profile
-        /** @var \HGON\HgonTemplate\Domain\Repository\PaymentProfileRepository $paymentProfileRepository */
-        $paymentProfileRepository = $this->objectManager->get('HGON\\HgonTemplate\\Domain\\Repository\\PaymentProfileRepository');
+        /** @var \HGON\HgonPayment\Domain\Repository\PaymentProfileRepository $paymentProfileRepository */
+        $paymentProfileRepository = $this->objectManager->get('HGON\\HgonPayment\\Domain\\Repository\\PaymentProfileRepository');
         $profile = $paymentProfileRepository->findByTitle('paypal')->getFirst();
 
-        if ($profile instanceof \HGON\HgonTemplate\Domain\Model\PaymentProfile) {
+        if ($profile instanceof \HGON\HgonPayment\Domain\Model\PaymentProfile) {
             $this->setPaymentProfile($profile);
             return $profile;
             //===
@@ -217,8 +217,8 @@ class PayPalApi
         curl_close($curl);
 
         // this profile should only created once. Save result (experience_profile_id) in DB!
-        /** @var \HGON\HgonTemplate\Domain\Model\PaymentProfile $paymentProfile */
-        $paymentProfile = $this->objectManager->get('HGON\\HgonTemplate\\Domain\\Model\\PaymentProfile');
+        /** @var \HGON\HgonPayment\Domain\Model\PaymentProfile $paymentProfile */
+        $paymentProfile = $this->objectManager->get('HGON\\HgonPayment\\Domain\\Model\\PaymentProfile');
         $paymentProfile->setTitle('paypal');
         $paymentProfile->setDescription($brandName);
         $paymentProfile->setProfileId($result->id);
@@ -420,7 +420,7 @@ class PayPalApi
     /**
      * Returns the paymentProfile
      *
-     * @return \HGON\HgonTemplate\Domain\Model\PaymentProfile $paymentProfile
+     * @return \HGON\HgonPayment\Domain\Model\PaymentProfile $paymentProfile
      */
     public function getPaymentProfile()
     {
@@ -430,10 +430,10 @@ class PayPalApi
     /**
      * Sets the paymentProfile
      *
-     * @param \HGON\HgonTemplate\Domain\Model\PaymentProfile $paymentProfile
+     * @param \HGON\HgonPayment\Domain\Model\PaymentProfile $paymentProfile
      * @return void
      */
-    public function setPaymentProfile(\HGON\HgonTemplate\Domain\Model\PaymentProfile $paymentProfile)
+    public function setPaymentProfile(\HGON\HgonPayment\Domain\Model\PaymentProfile $paymentProfile)
     {
         $this->paymentProfile = $paymentProfile;
     }

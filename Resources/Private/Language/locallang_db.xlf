@@ -45,6 +45,24 @@
 			<trans-unit id="tx_hgonpayment_domain_model_article.currency">
 				<source>Currency</source>
 			</trans-unit>
+
+
+			<trans-unit id="tx_hgontemplate_domain_model_paymentprofile">
+                <source>Did you know?</source>
+                <target>Wussen Sie schon?</target>
+            </trans-unit>
+            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.title">
+                <source>Title</source>
+                <target>Titel</target>
+            </trans-unit>
+            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.description">
+                <source>Description</source>
+                <target>Beschreibung (Wussten Sie schon?)</target>
+            </trans-unit>
+            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.profile_id">
+                <source>ProfileId</source>
+                <target>Profil ID</target>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>
