@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2019-10-07T11:38:24Z" product-name="hgon_payment">
+		<header/>
+		<body>
+			<trans-unit id="tx_hgonpayment_domain_model_order">
+				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_order.decription">
+				<source>Decription</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_order.soft_descriptor">
+				<source>Soft Descriptor</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_order.invoice_number">
+				<source>Invoice Number</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_order.article">
+				<source>Article</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article">
+				<source>Article</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.quantity">
+				<source>Quantity</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.price">
+				<source>Price</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.sku">
+				<source>Sku</source>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.currency">
+				<source>Currency</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

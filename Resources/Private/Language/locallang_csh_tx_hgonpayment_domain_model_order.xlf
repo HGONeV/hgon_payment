@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2019-10-07T11:38:24Z" product-name="hgon_payment">
+		<header/>
+		<body>
+			<trans-unit id="decription.description">
+				<source>decription</source>
+			</trans-unit>
+			<trans-unit id="soft_descriptor.description">
+				<source>softDescriptor</source>
+			</trans-unit>
+			<trans-unit id="invoice_number.description">
+				<source>invoiceNumber</source>
+			</trans-unit>
+			<trans-unit id="article.description">
+				<source>article</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
