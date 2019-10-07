@@ -13,9 +13,9 @@ namespace HGON\HgonPayment\Domain\Model;
  ***/
 
 /**
- * Order
+ * Basket
  */
-class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Basket extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /**
      * decription
@@ -173,4 +173,81 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->article = $article;
     }
+
+    /**
+     * Add prices of all articles
+     *
+     * @return float
+     */
+    public function getSubTotal()
+    {
+        $subTotal = 0.00;
+        /** @var \HGON\HgonPayment\Domain\Model\Article $article */
+        foreach ($this->getArticle() as $article) {
+            $subTotal += $article->getPrice();
+        }
+        return number_format($subTotal, 2, '.', ',');
+    }
+
+    /**
+     * Add vat of all articles
+     *
+     * @return float
+     */
+    public function getTaxTotal()
+    {
+        $vatTotal = 0.00;
+        /** @var \HGON\HgonPayment\Domain\Model\Article $article */
+        foreach ($this->getArticle() as $article) {
+            $vatTotal += $article->getVat();
+        }
+        return number_format($vatTotal, 2, '.', ',');
+    }
+
+    /**
+     * Add total of all articles
+     *
+     * @return float
+     */
+    public function getTotal()
+    {
+        return number_format($this->getSubTotal() + $this->getTaxTotal(), 2, '.', ',');
+    }
+
+    /**
+     * Use highest
+     *
+     * @return float
+     */
+    public function getShippingCosts()
+    {
+        $shippingCostsArray = [];
+        /** @var \HGON\HgonPayment\Domain\Model\Article $article */
+        foreach ($this->getArticle() as $article) {
+            $shippingCostsArray[] = $article->getShipping();
+        }
+        return number_format(max($shippingCostsArray), 2, '.', ',');
+    }
+
+    /**
+     * Create an array for payPal
+     *
+     * @return array
+     */
+    public function getArticleArrayForPayPal()
+    {
+        $articleList = [];
+        /** @var \HGON\HgonPayment\Domain\Model\Article $article */
+        foreach ($this->getArticle() as $article) {
+            $item = [];
+            $item['name'] = $article->getName();
+            $item['quantity'] = $article->getQuantity();
+            $item['price'] = $article->getPrice();
+            $item['sku'] = $article->getSku();
+            $item['currency'] = $article->getCurrency();
+            $articleList[] = $item;
+        }
+        return $articleList;
+    }
+
 }

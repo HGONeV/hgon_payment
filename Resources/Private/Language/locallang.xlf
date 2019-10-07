@@ -3,19 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2019-10-07T11:38:24Z" product-name="hgon_payment">
 		<header/>
 		<body>
-			<trans-unit id="tx_hgonpayment_domain_model_order">
-				<source>Order</source>
+			<trans-unit id="tx_hgonpayment_domain_model_basket">
+				<source>Basket</source>
 			</trans-unit>
-			<trans-unit id="tx_hgonpayment_domain_model_order.decription">
+			<trans-unit id="tx_hgonpayment_domain_model_basket.decription">
 				<source>Decription</source>
 			</trans-unit>
-			<trans-unit id="tx_hgonpayment_domain_model_order.soft_descriptor">
+			<trans-unit id="tx_hgonpayment_domain_model_basket.soft_descriptor">
 				<source>Soft Descriptor</source>
 			</trans-unit>
-			<trans-unit id="tx_hgonpayment_domain_model_order.invoice_number">
+			<trans-unit id="tx_hgonpayment_domain_model_basket.invoice_number">
 				<source>Invoice Number</source>
 			</trans-unit>
-			<trans-unit id="tx_hgonpayment_domain_model_order.article">
+			<trans-unit id="tx_hgonpayment_domain_model_basket.article">
 				<source>Article</source>
 			</trans-unit>
 			<trans-unit id="tx_hgonpayment_domain_model_article">
@@ -33,6 +33,12 @@
 			<trans-unit id="tx_hgonpayment_domain_model_article.price">
 				<source>Price</source>
 			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.vat">
+                <source>Vat</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_article.shipping">
+                <source>Shipping</source>
+            </trans-unit>
 			<trans-unit id="tx_hgonpayment_domain_model_article.sku">
 				<source>Sku</source>
 			</trans-unit>

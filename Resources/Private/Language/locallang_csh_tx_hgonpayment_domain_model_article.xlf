@@ -15,6 +15,12 @@
 			<trans-unit id="price.description">
 				<source>price</source>
 			</trans-unit>
+			<trans-unit id="vat.description">
+                <source>vat</source>
+            </trans-unit>
+            <trans-unit id="shipping.description">
+                <source>shipping</source>
+            </trans-unit>
 			<trans-unit id="sku.description">
 				<source>sku</source>
 			</trans-unit>

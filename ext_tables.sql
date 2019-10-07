@@ -1,8 +1,8 @@
 /*
 #
-# Table structure for table 'tx_hgonpayment_domain_model_order'
+# Table structure for table 'tx_hgonpayment_domain_model_basket'
 #
-CREATE TABLE tx_hgonpayment_domain_model_order (
+CREATE TABLE tx_hgonpayment_domain_model_basket (
 
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -50,13 +50,15 @@ CREATE TABLE tx_hgonpayment_domain_model_article (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
-	tx_order int(11) unsigned DEFAULT '0' NOT NULL,
+	tx_basket int(11) unsigned DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
 	description varchar(255) DEFAULT '' NOT NULL,
 	quantity varchar(255) DEFAULT '' NOT NULL,
 	price double(11,2) DEFAULT '0.00' NOT NULL,
 	sku varchar(255) DEFAULT '' NOT NULL,
+	vat varchar(255) DEFAULT '' NOT NULL,
+	shipping varchar(255) DEFAULT '' NOT NULL,
 	currency varchar(255) DEFAULT '' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
@@ -94,7 +96,7 @@ CREATE TABLE tx_hgonpayment_domain_model_article (
 #
 CREATE TABLE tx_hgonpayment_domain_model_article (
 
-	tx_order int(11) unsigned DEFAULT '0' NOT NULL,
+	tx_basket int(11) unsigned DEFAULT '0' NOT NULL,
 
 );
 

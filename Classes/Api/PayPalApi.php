@@ -261,25 +261,14 @@ class PayPalApi
     /**
      * createPayment
      *
-     * @param float $amount
-     * @param string $description
-     * @param float $shippingCosts
-     * @param boolean $valueAddedTax set to true, if $amount is gross
+     * @param \HGON\HgonPayment\Domain\Model\Basket $basket
      *
      * @return \stdClass|boolean
      */
-    public function createPayment($amount, $description, $shippingCosts = 0.00, $valueAddedTax = false)
+    public function createPayment($basket)
     {
-        $subtotal = number_format($amount, 2, '.', ',');
-        $tax = '0.00';
-        // if amount is gross
-        if ($valueAddedTax) {
-            $subtotal = ($amount / (100 + self::VAT)) * 100;
-            $tax = $amount - $subtotal;
-        }
-
         $data = [
-           // 'experience_profile_id' => $this->paymentProfile->getProfileId(),
+            // 'experience_profile_id' => $this->paymentProfile->getProfileId(),
             'intent' => 'sale',
             'payer' => [
                 'payment_method' => 'paypal'
@@ -287,33 +276,35 @@ class PayPalApi
             'transactions' => [
                 [
                     'amount' => [
-                        'total' => number_format($amount, 2, '.', ','),
+                        'total' => $basket->getTotal(),
                         'currency' => 'EUR',
                         'details' => [
-                            'subtotal' => number_format($subtotal, 2, '.', ','),
-                            'tax' => number_format($tax, 2, '.', ','),
-                            'shipping' => number_format($shippingCosts, 2, '.', ',')
+                            'subtotal' => $basket->getSubTotal(),
+                            'tax' => $basket->getTaxTotal(),
+                            'shipping' => $basket->getShippingCosts()
                         ]
                     ],
                     'description' => 'Spende für den Naturschutz. HGON sagt DANKE!',
-                //    'custom' => 'This is a hidden value',
+                    //    'custom' => 'This is a hidden value',
                     'invoice_number' => 'unique number',
                     'soft_descriptor' => 'Übersicht',
                     'item_list' => [
-                        'items' => [
-                            [
-                                'name' => 'Spende 1',
-                                'description' => 'Dies kommt der Umwelt zugute',
-                                'quantity' => '1',
-                                'price' => '10.00',
-                                'sku' => 'Interne Projektbezeichnung',
-                                'currency' => 'EUR'
-                            ]
-                        ]
+                        'items' => $basket->getArticleArrayForPayPal()
                     ],
+                    /*
+                    "shipping_address": {
+                        "recipient_name": "Betsy customer",
+                        "line1": "111 First Street",
+                        "city": "Saratoga",
+                        "country_code": "US",
+                        "postal_code": "95070",
+                        "phone": "0116519999164",
+                        "state": "CA"
+                      }
+                     */
                 ]
             ],
-           // 'note_to_payer' => 'Haben Sie fragen? Melden Sie sich gerne bei uns!',
+            // 'note_to_payer' => 'Haben Sie fragen? Melden Sie sich gerne bei uns!',
             'redirect_urls' => [
                 'return_url' => 'http://hgon.rkw.local/entdecken/',
                 'cancel_url' => 'http://hgon.rkw.local/mitmachen/'

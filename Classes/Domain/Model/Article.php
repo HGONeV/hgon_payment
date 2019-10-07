@@ -34,9 +34,9 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * quantity
      *
-     * @var string
+     * @var integer
      */
-    protected $quantity = '';
+    protected $quantity = 1;
 
     /**
      * price
@@ -44,6 +44,20 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var float
      */
     protected $price = 0.0;
+
+    /**
+     * vat
+     *
+     * @var float
+     */
+    protected $vat = 0.0;
+
+    /**
+     * shipping
+     *
+     * @var float
+     */
+    protected $shipping = 0.0;
 
     /**
      * sku
@@ -57,7 +71,7 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @var string
      */
-    protected $currency = '';
+    protected $currency = 'EUR';
 
     /**
      * Returns the name
@@ -104,7 +118,7 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the quantity
      *
-     * @return string $quantity
+     * @return integer $quantity
      */
     public function getQuantity()
     {
@@ -114,7 +128,7 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the quantity
      *
-     * @param string $quantity
+     * @param integer $quantity
      * @return void
      */
     public function setQuantity($quantity)
@@ -141,6 +155,48 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setPrice($price)
     {
         $this->price = $price;
+    }
+
+    /**
+     * Returns the vat
+     *
+     * @return float $vat
+     */
+    public function getVat()
+    {
+        return $this->vat;
+    }
+
+    /**
+     * Sets the vat
+     *
+     * @param float $vat
+     * @return void
+     */
+    public function setVat($vat)
+    {
+        $this->vat = $vat;
+    }
+
+    /**
+     * Returns the shipping
+     *
+     * @return float $shipping
+     */
+    public function getShipping()
+    {
+        return $this->shipping;
+    }
+
+    /**
+     * Sets the shipping
+     *
+     * @param float $shipping
+     * @return void
+     */
+    public function setShipping($shipping)
+    {
+        $this->shipping = $shipping;
     }
 
     /**

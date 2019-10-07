@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_order',
+        'title' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_basket',
         'label' => 'decription',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -17,7 +17,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'decription,soft_descriptor,invoice_number,article',
-        'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_order.gif'
+        'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_basket.gif'
     ],
     'interface' => [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, decription, soft_descriptor, invoice_number, article',
@@ -54,8 +54,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_hgonpayment_domain_model_order',
-                'foreign_table_where' => 'AND tx_hgonpayment_domain_model_order.pid=###CURRENT_PID### AND tx_hgonpayment_domain_model_order.sys_language_uid IN (-1,0)',
+                'foreign_table' => 'tx_hgonpayment_domain_model_basket',
+                'foreign_table_where' => 'AND tx_hgonpayment_domain_model_basket.pid=###CURRENT_PID### AND tx_hgonpayment_domain_model_basket.sys_language_uid IN (-1,0)',
             ],
         ],
         'l10n_diffsource' => [
@@ -117,7 +117,7 @@ return [
 
         'decription' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_order.decription',
+            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_basket.decription',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -126,7 +126,7 @@ return [
         ],
         'soft_descriptor' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_order.soft_descriptor',
+            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_basket.soft_descriptor',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -135,7 +135,7 @@ return [
         ],
         'invoice_number' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_order.invoice_number',
+            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_basket.invoice_number',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -144,11 +144,11 @@ return [
         ],
         'article' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_order.article',
+            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_basket.article',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_hgonpayment_domain_model_article',
-                'foreign_field' => 'tx_order',
+                'foreign_field' => 'tx_basket',
                 'maxitems' => 9999,
                 'appearance' => [
                     'collapseAll' => 0,

@@ -20,10 +20,10 @@ return [
         'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_article.gif'
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, sku, currency',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, vat, shipping, sku, currency',
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, sku, currency, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
+        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, vat, shipping, sku, currency, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -151,6 +151,24 @@ return [
                 'eval' => 'double2'
             ]
         ],
+        'vat' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_article.vat',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
+        'shipping' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_article.shipping',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
         'sku' => [
             'exclude' => true,
             'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_article.sku',
@@ -170,7 +188,7 @@ return [
             ],
         ],
     
-        'tx_order' => [
+        'tx_basket' => [
             'config' => [
                 'type' => 'passthrough',
             ],
