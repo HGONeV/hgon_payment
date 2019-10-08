@@ -1,0 +1,27 @@
+
+plugin.tx_hgonpayment {
+	view {
+		# cat=plugin.tx_hgonpayment/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:hgon_payment/Resources/Private/Templates/
+		# cat=plugin.tx_hgonpayment/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:hgon_payment/Resources/Private/Partials/
+		# cat=plugin.tx_hgonpayment/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:hgon_payment/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_hgonpayment//a; type=string; label=Default storage PID
+		storagePid =
+	}
+    settings {
+        api {
+            paypal {
+                # cat=plugin.tx_hgonpayment//a; type=int; label=PayPal app client id
+                clientId =
+                # cat=plugin.tx_hgonpayment//a; type=int; label=PayPal app secret
+                clientSecret =
+            }
+        }
+        # cat=plugin.tx_hgonpayment//a; type=int; label=PID of order page
+        orderPid =
+    }
+}

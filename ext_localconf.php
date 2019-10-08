@@ -5,6 +5,19 @@ call_user_func(
     function($extKey)
     {
 
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+            'HGON.HgonPayment',
+            'Order',
+            [
+                'PayPal' => 'confirmPayment, executePayment'
+            ],
+            // non-cacheable actions
+            [
+                'PayPal' => 'confirmPayment, executePayment'
+            ]
+        );
+
+
         // caching
         if( !is_array($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] ) ) {
             $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] = array();

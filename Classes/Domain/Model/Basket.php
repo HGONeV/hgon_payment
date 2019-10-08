@@ -47,12 +47,22 @@ class Basket extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $article = null;
 
     /**
+     * paymentData
+     *
+     * @var array
+     */
+    protected $paymentData = [];
+
+    /**
      * __construct
      */
     public function __construct()
     {
         //Do not remove the next line: It would break the functionality
         $this->initStorageObjects();
+
+        // create unique invoice number
+        $this->setInvoiceNumber(uniqid('hgon_'));
     }
 
     /**
@@ -172,6 +182,27 @@ class Basket extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setArticle(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $article)
     {
         $this->article = $article;
+    }
+
+    /**
+     * Returns the paymentData
+     *
+     * @return array $paymentData
+     */
+    public function getPaymentData()
+    {
+        return $this->paymentData;
+    }
+
+    /**
+     * Sets the paymentData
+     *
+     * @param array $paymentData
+     * @return void
+     */
+    public function setPaymentData($paymentData)
+    {
+        $this->paymentData = $paymentData;
     }
 
     /**

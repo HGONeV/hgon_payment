@@ -4,6 +4,11 @@ defined('TYPO3_MODE') || die('Access denied.');
 call_user_func(
     function()
     {
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+            'HGON.HgonPayment',
+            'Order',
+            'HGON Payment: Bestellabwicklung'
+        );
 
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('hgon_payment', 'Configuration/TypoScript', 'HGON Payment');
 

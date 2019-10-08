@@ -267,6 +267,16 @@ class PayPalApi
      */
     public function createPayment($basket)
     {
+        $settings = $this->getSettings();
+
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = $objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+        $returnUri = $uriBuilder->reset()->setCreateAbsoluteUri(true)
+            ->setTargetPageUid(intval($settings['orderPid']))
+            ->uriFor('confirmPayment', null, 'PayPal', 'HgonPayment', 'Order');
+
         $data = [
             // 'experience_profile_id' => $this->paymentProfile->getProfileId(),
             'intent' => 'sale',
@@ -286,7 +296,7 @@ class PayPalApi
                     ],
                     'description' => 'Spende für den Naturschutz. HGON sagt DANKE!',
                     //    'custom' => 'This is a hidden value',
-                    'invoice_number' => 'unique number',
+                    'invoice_number' => $basket->getInvoiceNumber(),
                     'soft_descriptor' => 'Übersicht',
                     'item_list' => [
                         'items' => $basket->getArticleArrayForPayPal()
@@ -306,12 +316,43 @@ class PayPalApi
             ],
             // 'note_to_payer' => 'Haben Sie fragen? Melden Sie sich gerne bei uns!',
             'redirect_urls' => [
-                'return_url' => 'http://hgon.rkw.local/entdecken/',
+                'return_url' => $returnUri,
                 'cancel_url' => 'http://hgon.rkw.local/mitmachen/'
             ]
         ];
 
         $url = $this->host . '/v1/payments/payment';
+        $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+
+        $this->cUrl = $curl;
+        return $this->sendRequest();
+        //===
+    }
+
+
+
+    /**
+     * executePayment
+     *
+     * @param string $paymentId
+     * @param string $token
+     * @param string $payerId
+     *
+     * @return \stdClass|boolean
+     */
+    public function executePayment($paymentId, $token, $payerId)
+    {
+        $data = [
+            'payer_id' => $payerId
+        ];
+
+        $url = $this->host . '/v1/payments/payment/' . $paymentId . '/execute';
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
@@ -400,7 +441,7 @@ class PayPalApi
      */
     protected function getSettings($which = ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS)
     {
-        return Common::getTyposcriptConfiguration('Hgontemplate', $which);
+        return Common::getTyposcriptConfiguration('Hgonpayment', $which);
         //===
     }
 

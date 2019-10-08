@@ -1,0 +1,33 @@
+plugin.tx_hgonpayment {
+	view {
+		templateRootPaths.0 = EXT:hgon_donation/Resources/Private/Templates/
+		templateRootPaths.1 = {$plugin.tx_hgonpayment.view.templateRootPath}
+		partialRootPaths.0 = EXT:hgon_donation/Resources/Private/Partials/
+		partialRootPaths.1 = {$plugin.tx_hgonpayment.view.partialRootPath}
+		layoutRootPaths.0 = EXT:hgon_donation/Resources/Private/Layouts/
+		layoutRootPaths.1 = {$plugin.tx_hgonpayment.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_hgonpayment.persistence.storagePid}
+		#recursive = 1
+	}
+	features {
+		#skipDefaultArguments = 1
+	}
+	mvc {
+		#callDefaultActionIfActionCantBeResolved = 1
+	}
+    settings {
+        api {
+            paypal {
+                clientId = {$plugin.tx_hgonpayment.settings.api.paypal.clientId}
+                clientSecret = {$plugin.tx_hgonpayment.settings.api.paypal.clientSecret}
+            }
+        }
+        orderPid = {$plugin.tx_hgonpayment.settings.orderPid}
+    }
+}
+
+
+plugin.tx_hgonpayment_order < plugin.tx_hgonpayment
+
