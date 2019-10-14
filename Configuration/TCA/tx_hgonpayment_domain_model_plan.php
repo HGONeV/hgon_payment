@@ -3,12 +3,12 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_hgonpayment_domain_model_paymentprofile', 'EXT:hgon_template/Resources/Private/Language/locallang_csh_tx_hgonpayment_domain_model_paymentprofile.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_hgonpayment_domain_model_paymentprofile');
-$GLOBALS['TCA']['tx_hgonpayment_domain_model_paymentprofile'] = [
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_hgonpayment_domain_model_plan', 'EXT:hgon_template/Resources/Private/Language/locallang_csh_tx_hgonpayment_domain_model_plan.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_hgonpayment_domain_model_plan');
+$GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
 	'ctrl' => [
 	    'hideTable' => true,
-		'title'	=> 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paymentprofile',
+		'title'	=> 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan',
 		'label' => 'description',
 		'label_alt' => 'title',
 		'tstamp' => 'tstamp',
@@ -23,11 +23,11 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paymentprofile'] = [
 		'enablecolumns' => [
 			'disabled' => 'hidden',
 		],
-		'searchFields' => 'title,description, profile_id',
-		'iconfile' => 'EXT:hgon_template/Resources/Public/Icons/tx_hgonpayment_domain_model_paymentprofile.gif'
+		'searchFields' => 'title,description, plan_id, product_id, status, data',
+		'iconfile' => 'EXT:hgon_template/Resources/Public/Icons/tx_hgonpayment_domain_model_plan.gif'
     ],
 	'interface' => [
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, visibility, title, description, profile_id',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, visibility, title, description, plan_id, product_id, status, data',
     ],
 	'types' => [
 		'1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --palette--;;1,visibility, title, description,'],
@@ -61,8 +61,8 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paymentprofile'] = [
 				'items' => [
 					['', 0],
                 ],
-				'foreign_table' => 'tx_hgonpayment_domain_model_paymentprofile',
-				'foreign_table_where' => 'AND tx_hgonpayment_domain_model_paymentprofile.pid=###CURRENT_PID### AND tx_hgonpayment_domain_model_paymentprofile.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'tx_hgonpayment_domain_model_plan',
+				'foreign_table_where' => 'AND tx_hgonpayment_domain_model_plan.pid=###CURRENT_PID### AND tx_hgonpayment_domain_model_plan.sys_language_uid IN (-1,0)',
             ],
         ],
 		'l10n_diffsource' => [
@@ -81,7 +81,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paymentprofile'] = [
 
 		'title' => [
 			'exclude' => 0,
-			'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paymentprofile.title',
+			'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.title',
 			'config' => [
 				'type' => 'input',
 				'size' => 30,
@@ -90,7 +90,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paymentprofile'] = [
         ],
         'description' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paymentprofile.description',
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.description',
             'config' => [
                 'type' => 'text',
                 'enableRichtext' => true,
@@ -105,9 +105,36 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paymentprofile'] = [
                 'eval' => 'trim,required',
             ],
         ],
-        'profile_id' => [
+        'plan_id' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paymentprofile.profile_id',
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.plan_id',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ],
+        ],
+        'product_id' => [
+            'exclude' => 0,
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.product_id',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ],
+        ],
+        'status' => [
+            'exclude' => 0,
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.status',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ],
+        ],
+        'data' => [
+            'exclude' => 0,
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.data',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

@@ -45,6 +45,9 @@
 			<trans-unit id="tx_hgonpayment_domain_model_article.currency">
 				<source>Currency</source>
 			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.is_donation">
+                <source>Is donation</source>
+            </trans-unit>
 
 
 			<trans-unit id="tx_hgontemplate_domain_model_paymentprofile">

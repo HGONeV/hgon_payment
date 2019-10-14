@@ -74,6 +74,13 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $currency = 'EUR';
 
     /**
+     * isDonation
+     *
+     * @var boolean
+     */
+    protected $isDonation = true;
+
+    /**
      * Returns the name
      *
      * @return string $name
@@ -239,5 +246,26 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+    }
+
+    /**
+     * Returns the isDonation
+     *
+     * @return boolean $isDonation
+     */
+    public function getIsDonation()
+    {
+        return $this->isDonation;
+    }
+
+    /**
+     * Sets the isDonation
+     *
+     * @param boolean $isDonation
+     * @return void
+     */
+    public function setIsDonation($isDonation)
+    {
+        $this->isDonation = $isDonation;
     }
 }

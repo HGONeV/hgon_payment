@@ -265,7 +265,7 @@ class PayPalApi
      *
      * @return \stdClass|boolean
      */
-    public function createPayment($basket)
+    public function createPayment(\HGON\HgonPayment\Domain\Model\Basket $basket)
     {
         $settings = $this->getSettings();
 
@@ -278,6 +278,7 @@ class PayPalApi
             ->uriFor('confirmPayment', null, 'PayPal', 'HgonPayment', 'Order');
 
         $data = [
+            // @toDo: Set Payment Profile
             // 'experience_profile_id' => $this->paymentProfile->getProfileId(),
             'intent' => 'sale',
             'payer' => [
@@ -369,40 +370,66 @@ class PayPalApi
 
 
     /**
-     * checkStatus
+     * createPlan
+     * for subscriptions / recurring paying e.g. donations
+     *
+     * @param \HGON\HgonPayment\Domain\Model\Article $article
      *
      * @return \stdClass|boolean
      */
-    public function checkStatus()
+    public function createPlan(\HGON\HgonPayment\Domain\Model\Article $article)
     {
-        $url = $this->host . '/v1/budget';
-        $authorization = 'Authorization: Bearer ' . $this->clientCredentials->access_token;
+        $data = [
+            //'product_id' => $article->getSku(),
+            'product_id' => 'PROD-testlalala',
+            'name' => $article->getName(),
+            'description' => $article->getDescription(),
+            'status' => 'ACTIVE',
+            'billing_cycles' => [
+                [
+                    'frequency' => [
+                        'interval_unit' => 'MONTH',
+                        'interval_count' => 1,
+                    ],
+                    'tenure_type' => 'REGULAR',
+                    'sequence' => 1,
+                    'total_cycles' => 0,
+                    'pricing_scheme' => [
+                        'fixed_price' => [
+                            'value' => $article->getPrice(),
+                            'currency_code' => 'EUR'
+                        ]
+                    ]
+                ]
+            ],
+            'payment_preferences' => [
+                'auto_bill_outstanding' => true,
+                'setup_fee' => [
+                    'value' => '0',
+                    'currency_code' => 'EUR'
+                ],
+                'setup_fee_failure_action' => "CONTINUE",
+                'payment_failure_threshold' => 3
+            ],
+            /*
+            'taxes' => [
+                'percentage' => '0',
+                'inclusive' => false
+            ]
+            */
+        ];
 
+        $url = $this->host . '/v1/billing/plans';
+        $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
 
-        $data = array(
-            'additionalProducts' 		=> "RSV",
-        );
-
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-
-        /*
-        // $this->clientCredentials->values[0]->access_token
-
-		$url = $this->host . '/1/terms';
-        $auth_data = array(
-            'client_id' 		=> $this->clientId,
-            'client_secret' 	=> $this->clientSecret,
-            'access_token' 		=> $this->clientCredentials->values[0]->access_token
-        );
-		curl_setopt($this->cUrl, CURLOPT_URL, $url);
-        curl_setopt($this->cUrl, CURLOPT_POSTFIELDS, http_build_query($auth_data));
-
-		return $this->sendRequest();
-        */
+        $this->cUrl = $curl;
+        return $this->sendRequest();
         //===
     }
 

@@ -2,7 +2,28 @@
     <section class="section">
         <div class="section__content">
             <div class="wrap wrap--text / align-center">
-                <h1>Vielen Dank für Ihre Bestellung!</h1>
+                <h1>Wohooo!</h1>
+
+                <f:for each="{basket.article}" as="article" iteration="iter">
+                    <f:if condition="{iter.isFirst}">
+                        <f:if condition="{article.isDonation}">
+                            <f:then>
+                                <p>
+                                    Ihre Spende ist die tägliche Triebfeder für unsere Arbeit. Wir bedanken uns sehr!
+                                </p>
+                            </f:then>
+                            <f:else>
+                                <p>
+                                    Ihre Bestellung ist eingegangen. Wir werden uns zeitnah darum kümmern.
+                                </p>
+                            </f:else>
+                        </f:if>
+                    </f:if>
+                </f:for>
+
+                <h4>Übersicht</h4>
+                <f:render partial="PayPal/Order" arguments="{basket: basket}" />
+
             </div>
         </div>
     </section>

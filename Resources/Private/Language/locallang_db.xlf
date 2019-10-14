@@ -45,11 +45,14 @@
 			<trans-unit id="tx_hgonpayment_domain_model_article.currency">
 				<source>Currency</source>
 			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.is_donation">
+                <source>Is donation</source>
+            </trans-unit>
 
 
 			<trans-unit id="tx_hgontemplate_domain_model_paymentprofile">
-                <source>Did you know?</source>
-                <target>Wussen Sie schon?</target>
+                <source>Payment profile</source>
+                <target>Händlerprofil</target>
             </trans-unit>
             <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.title">
                 <source>Title</source>

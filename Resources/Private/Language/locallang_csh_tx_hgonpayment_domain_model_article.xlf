@@ -27,6 +27,9 @@
 			<trans-unit id="currency.description">
 				<source>currency</source>
 			</trans-unit>
+			<trans-unit id="is_donation.description">
+                <source>is_donation</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

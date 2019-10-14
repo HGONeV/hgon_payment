@@ -16,14 +16,14 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'name,description,quantity,price,sku,currency',
+        'searchFields' => 'name,description,quantity,price,sku,currency,is_donation',
         'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_article.gif'
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, vat, shipping, sku, currency',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, vat, shipping, sku, currency, is_donation',
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, vat, shipping, sku, currency, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
+        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, vat, shipping, sku, currency, is_donation, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -187,6 +187,14 @@ return [
                 'eval' => 'trim'
             ],
         ],
+        'is_donation' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_article.is_donation',
+            'config' => array(
+                'type' => 'check',
+                'default' => 1
+            )
+        ),
     
         'tx_basket' => [
             'config' => [
