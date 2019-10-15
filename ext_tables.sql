@@ -59,7 +59,7 @@ CREATE TABLE tx_hgonpayment_domain_model_plan (
 
 );
 
-/*
+
 #
 # Table structure for table 'tx_hgonpayment_domain_model_basket'
 #
@@ -162,4 +162,4 @@ CREATE TABLE tx_hgonpayment_domain_model_article (
 
 );
 
-*/
+
