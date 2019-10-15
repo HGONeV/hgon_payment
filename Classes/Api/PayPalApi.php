@@ -127,8 +127,6 @@ class PayPalApi
 
                 $result = curl_exec($this->cUrl);
 
-                DebuggerUtility::var_dump($result); exit;
-
                 // put array with access_token, refresh_token etc into variable
                 $this->clientCredentials = json_decode($result);
                 $this->clientCredentials->expiresInTstamp = time() + $this->clientCredentials->expires_in;
@@ -342,6 +340,9 @@ class PayPalApi
 
 
         $this->cUrl = $curl;
+
+        DebuggerUtility::var_dump($this->sendRequest()); exit;
+
         return $this->sendRequest();
         //===
     }
