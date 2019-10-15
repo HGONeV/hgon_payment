@@ -114,25 +114,26 @@ class PayPalApi
 
         } else {
             // make an API call
-            $this->cUrl = curl_init();
+            try {
+                $this->cUrl = curl_init();
 
-            curl_setopt($this->cUrl, CURLOPT_POST, 1);
-            curl_setopt($this->cUrl, CURLOPT_POSTFIELDS, 'grant_type=client_credentials');
-            curl_setopt($this->cUrl, CURLOPT_URL, $this->host . '/v1/oauth2/token');
-            curl_setopt($this->cUrl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($this->cUrl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($this->cUrl, CURLOPT_USERPWD, $clientId.":".$clientSecret);
-            curl_setopt($this->cUrl, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Accept-Language: en_US'));
+                curl_setopt($this->cUrl, CURLOPT_POST, 1);
+                curl_setopt($this->cUrl, CURLOPT_POSTFIELDS, 'grant_type=client_credentials');
+                curl_setopt($this->cUrl, CURLOPT_URL, $this->host . '/v1/oauth2/token');
+                curl_setopt($this->cUrl, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($this->cUrl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                curl_setopt($this->cUrl, CURLOPT_USERPWD, $clientId.":".$clientSecret);
+                curl_setopt($this->cUrl, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Accept-Language: en_US'));
 
-            $result = curl_exec($this->cUrl);
-            if (!$result) {
-                return "Connection Failure";
-            } else {
+                $result = curl_exec($this->cUrl);
                 // put array with access_token, refresh_token etc into variable
                 $this->clientCredentials = json_decode($result);
                 $this->clientCredentials->expiresInTstamp = time() + $this->clientCredentials->expires_in;
                 $this->cacheManager->set($this->cacheDataIdentifier, $this->clientCredentials);
+            } catch (\Exception $e) {
+                $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', str_replace(array("\n", "\r"), '', $e->getMessage())));
             }
+
         }
         // create paypal profile, if not already existing
         $this->setCheckoutExperience();
@@ -324,12 +325,18 @@ class PayPalApi
 
         $url = $this->host . '/v1/payments/payment';
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+
+        try {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        } catch (\Exception $e) {
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
+        }
+
 
         $this->cUrl = $curl;
         return $this->sendRequest();
@@ -355,12 +362,17 @@ class PayPalApi
 
         $url = $this->host . '/v1/payments/payment/' . $paymentId . '/execute';
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+
+        try {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        } catch (\Exception $e) {
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
+        }
 
         $this->cUrl = $curl;
         return $this->sendRequest();
@@ -421,12 +433,17 @@ class PayPalApi
 
         $url = $this->host . '/v1/billing/plans';
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+
+        try {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        } catch (\Exception $e) {
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
+        }
 
         $this->cUrl = $curl;
         return $this->sendRequest();
