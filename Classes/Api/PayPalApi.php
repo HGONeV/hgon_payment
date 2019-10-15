@@ -126,6 +126,9 @@ class PayPalApi
                 curl_setopt($this->cUrl, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Accept-Language: en_US'));
 
                 $result = curl_exec($this->cUrl);
+
+                DebuggerUtility::var_dump($result); exit;
+
                 // put array with access_token, refresh_token etc into variable
                 $this->clientCredentials = json_decode($result);
                 $this->clientCredentials->expiresInTstamp = time() + $this->clientCredentials->expires_in;
