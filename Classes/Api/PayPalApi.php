@@ -340,7 +340,7 @@ class PayPalApi
 
 
         $this->cUrl = $curl;
-
+        echo "lala";
         DebuggerUtility::var_dump($this->sendRequest()); exit;
 
         return $this->sendRequest();
