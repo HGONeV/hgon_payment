@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2019-10-07T11:38:24Z" product-name="hgon_payment">
+		<header/>
+		<body>
+			<trans-unit id="tx_hgonpayment_domain_model_basket">
+				<source>Basket</source>
+				<target>Einkaufskorb</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_basket.decription">
+				<source>Decription</source>
+				<target>Beschreibung</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_basket.soft_descriptor">
+				<source>Soft Descriptor</source>
+				<target>Alternativbeschreibung</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_basket.invoice_number">
+				<source>Invoice Number</source>
+				<target>Rechnungsnummer</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_basket.article">
+				<source>Article</source>
+				<target>Artikel</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article">
+				<source>Article</source>
+				<target>Artikel</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.name">
+				<source>Name</source>
+				<target>Name</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.description">
+				<source>Description</source>
+				<target>Beschreibung</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.quantity">
+				<source>Quantity</source>
+				<target>Menge</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.price">
+				<source>Price</source>
+				<target>Preis (netto)</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.vat">
+                <source>Vat</source>
+                <target>Umsatzsteuer</target>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_article.shipping">
+                <source>Shipping</source>
+                <target>Versandkosten</target>
+            </trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.sku">
+				<source>Sku</source>
+				<target>Sku (interne Produknummer. Schlicht halten! Z.B: "prod001")</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.currency">
+				<source>Currency</source>
+				<target>Währung</target>
+			</trans-unit>
+			<trans-unit id="tx_hgonpayment_domain_model_article.is_donation">
+                <source>Is donation</source>
+                <target>Ist eine Spende</target>
+            </trans-unit>
+
+
+			<trans-unit id="tx_hgontemplate_domain_model_paymentprofile">
+                <source>Payment profile</source>
+                <target>Händlerprofil</target>
+            </trans-unit>
+            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.title">
+                <source>Title</source>
+                <target>Titel</target>
+            </trans-unit>
+            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.description">
+                <source>Description</source>
+                <target>Beschreibung (Wussten Sie schon?)</target>
+            </trans-unit>
+            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.profile_id">
+                <source>ProfileId</source>
+                <target>Profil ID</target>
+            </trans-unit>
+		</body>
+	</file>
+</xliff>

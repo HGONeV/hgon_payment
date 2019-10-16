@@ -15,7 +15,7 @@ namespace HGON\HgonPayment\Domain\Model;
 /**
  * Article
  */
-class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements ArticleInterface
 {
     /**
      * name

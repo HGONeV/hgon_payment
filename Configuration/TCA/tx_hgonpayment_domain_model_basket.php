@@ -1,6 +1,7 @@
 <?php
 return [
     'ctrl' => [
+        'hideTable' => true,
         'title' => 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_basket',
         'label' => 'decription',
         'tstamp' => 'tstamp',
