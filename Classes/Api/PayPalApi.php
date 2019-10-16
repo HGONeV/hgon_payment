@@ -77,6 +77,13 @@ class PayPalApi
      */
     protected $persistenceManager;
 
+    /**
+     * Logger
+     *
+     * @var \TYPO3\CMS\Core\Log\Logger
+     */
+    protected $logger;
+
 
     private function initializeCache() {
         // initialize caching
@@ -132,7 +139,7 @@ class PayPalApi
                 $this->clientCredentials->expiresInTstamp = time() + $this->clientCredentials->expires_in;
                 $this->cacheManager->set($this->cacheDataIdentifier, $this->clientCredentials);
             } catch (\Exception $e) {
-                $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', str_replace(array("\n", "\r"), '', $e->getMessage())));
+                $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', str_replace(array("\n", "\r"), '', $e->getMessage())));
             }
 
         }
@@ -184,7 +191,7 @@ class PayPalApi
             $image = $imageService->getImage($logoImageUrl, null, 0);
             $imageUri = $imageService->getImageUri($image, true);
         } catch (\Exception $e) {
-            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to catch the following image URI "%s". Please check the configuration. Error: %s', $logoImageUrl, $e->getMessage()));
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to catch the following image URI "%s". Please check the configuration. Error: %s', $logoImageUrl, $e->getMessage()));
         }
 
         $data = [
@@ -227,8 +234,6 @@ class PayPalApi
         $paymentProfileRepository->add($paymentProfile);
 
         $this->persistenceManager->persistAll();
-
-
 
         $this->setPaymentProfile($paymentProfile);
         return $paymentProfile;
@@ -327,22 +332,19 @@ class PayPalApi
         $url = $this->host . '/v1/payments/payment';
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
 
+        $curl = curl_init();
         try {
-            $curl = curl_init();
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
         } catch (\Exception $e) {
-            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
         }
 
 
         $this->cUrl = $curl;
-        echo "lala";
-        DebuggerUtility::var_dump($this->sendRequest()); exit;
-
         return $this->sendRequest();
         //===
     }
@@ -367,15 +369,15 @@ class PayPalApi
         $url = $this->host . '/v1/payments/payment/' . $paymentId . '/execute';
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
 
+        $curl = curl_init();
         try {
-            $curl = curl_init();
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
         } catch (\Exception $e) {
-            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
         }
 
         $this->cUrl = $curl;
@@ -438,15 +440,15 @@ class PayPalApi
         $url = $this->host . '/v1/billing/plans';
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
 
+        $curl = curl_init();
         try {
-            $curl = curl_init();
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
         } catch (\Exception $e) {
-            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
         }
 
         $this->cUrl = $curl;
@@ -469,10 +471,16 @@ class PayPalApi
             if (property_exists($result, 'messages')) {
                 $result->messages = (array)$result->messages;
             }
+
+            // log api internal error
+            if ($result->name == "VALIDATION_ERROR") {
+                $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An internal PayPal-API error occurs on field "%s" with message "%s". Please check the configuration.', $result->details[0]->field, $result->details[0]->issue));
+            }
             return $result;
             //===
         }
         catch(\Exception $e){
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $this->cUrl, $e->getMessage()));
             return FALSE;
             //===
         }
@@ -502,7 +510,11 @@ class PayPalApi
      */
     private function getLogger()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+        if (!$this->logger instanceof \TYPO3\CMS\Core\Log\Logger) {
+            $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+        }
+
+        return $this->logger;
         //===
     }
 
