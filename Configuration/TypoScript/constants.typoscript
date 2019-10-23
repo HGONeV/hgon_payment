@@ -23,5 +23,7 @@ plugin.tx_hgonpayment {
         }
         # cat=plugin.tx_hgonpayment//a; type=int; label=PID of order page
         orderPid =
+        # cat=plugin.tx_hgonpayment//a; type=int; label=PID of subscription page
+        subscriptionPid =
     }
 }

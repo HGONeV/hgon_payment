@@ -7,7 +7,13 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
             'HGON.HgonPayment',
             'Order',
-            'HGON Payment: Bestellabwicklung'
+            'HGON Payment: Bestell-Abwicklung'
+        );
+
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+            'HGON.HgonPayment',
+            'Subscription',
+            'HGON Payment: Abo-Abwicklung'
         );
 
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('hgon_payment', 'Configuration/TypoScript', 'HGON Payment');

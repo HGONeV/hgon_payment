@@ -17,6 +17,18 @@ call_user_func(
             ]
         );
 
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+            'HGON.HgonPayment',
+            'Subscription',
+            [
+                'PayPal' => 'confirmSubscription, executeSubscription'
+            ],
+            // non-cacheable actions
+            [
+                'PayPal' => 'confirmSubscription, executeSubscription'
+            ]
+        );
+
 
         // caching
         if( !is_array($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] ) ) {

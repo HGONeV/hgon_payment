@@ -3,12 +3,12 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_hgonpayment_domain_model_plan', 'EXT:hgon_template/Resources/Private/Language/locallang_csh_tx_hgonpayment_domain_model_plan.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_hgonpayment_domain_model_plan');
-$GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_hgonpayment_domain_model_paypalplan', 'EXT:hgon_template/Resources/Private/Language/locallang_csh_tx_hgonpayment_domain_model_paypalplan.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_hgonpayment_domain_model_paypalplan');
+$GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalplan'] = [
 	'ctrl' => [
 	    'hideTable' => true,
-		'title'	=> 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan',
+		'title'	=> 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalplan',
 		'label' => 'description',
 		'label_alt' => 'title',
 		'tstamp' => 'tstamp',
@@ -24,7 +24,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
 			'disabled' => 'hidden',
 		],
 		'searchFields' => 'title,description, plan_id, product_id, status, data',
-		'iconfile' => 'EXT:hgon_template/Resources/Public/Icons/tx_hgonpayment_domain_model_plan.gif'
+		'iconfile' => 'EXT:hgon_template/Resources/Public/Icons/tx_hgonpayment_domain_model_paypalplan.gif'
     ],
 	'interface' => [
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, visibility, title, description, plan_id, product_id, status, data',
@@ -61,8 +61,8 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
 				'items' => [
 					['', 0],
                 ],
-				'foreign_table' => 'tx_hgonpayment_domain_model_plan',
-				'foreign_table_where' => 'AND tx_hgonpayment_domain_model_plan.pid=###CURRENT_PID### AND tx_hgonpayment_domain_model_plan.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'tx_hgonpayment_domain_model_paypalplan',
+				'foreign_table_where' => 'AND tx_hgonpayment_domain_model_paypalplan.pid=###CURRENT_PID### AND tx_hgonpayment_domain_model_paypalplan.sys_language_uid IN (-1,0)',
             ],
         ],
 		'l10n_diffsource' => [
@@ -81,7 +81,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
 
 		'title' => [
 			'exclude' => 0,
-			'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.title',
+			'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalplan.title',
 			'config' => [
 				'type' => 'input',
 				'size' => 30,
@@ -90,7 +90,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
         ],
         'description' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.description',
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalplan.description',
             'config' => [
                 'type' => 'text',
                 'enableRichtext' => true,
@@ -107,7 +107,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
         ],
         'plan_id' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.plan_id',
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalplan.plan_id',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -116,7 +116,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
         ],
         'product_id' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.product_id',
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalplan.product_id',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -125,7 +125,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
         ],
         'status' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.status',
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalplan.status',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -134,7 +134,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_plan'] = [
         ],
         'data' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_plan.data',
+            'label' => 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalplan.data',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

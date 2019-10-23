@@ -25,6 +25,7 @@ plugin.tx_hgonpayment {
             }
         }
         orderPid = {$plugin.tx_hgonpayment.settings.orderPid}
+        subscriptionPid = {$plugin.tx_hgonpayment.settings.subscriptionPid}
     }
 }
 

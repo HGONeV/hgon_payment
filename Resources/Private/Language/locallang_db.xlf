@@ -66,6 +66,51 @@
                 <source>ProfileId</source>
                 <target>Profil ID</target>
             </trans-unit>
+
+
+            <trans-unit id="tx_hgonpayment_domain_model_paypalproduct">
+                <source>Article</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalproduct.name">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalproduct.description">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalproduct.type">
+                <source>Type</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalproduct.category">
+                <source>Category</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalproduct.sku">
+                <source>Sku</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalproduct.product_id">
+                <source>Product ID</source>
+            </trans-unit>
+
+            <trans-unit id="tx_hgonpayment_domain_model_paypalplan">
+                <source>Article</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalplan.title">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalplan.description">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalplan.plan_id">
+                <source>Plan ID</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalplan.product_id">
+                <source>Product ID</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalplan.status">
+                <source>Status</source>
+            </trans-unit>
+            <trans-unit id="tx_hgonpayment_domain_model_paypalplan.data">
+                <source>Data</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

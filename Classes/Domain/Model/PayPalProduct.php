@@ -16,22 +16,22 @@ namespace HGON\HgonPayment\Domain\Model;
  */
 
 /**
- * Class Plan
+ * Class PayPalProduct
  *
  * @author Maximilian Fäßler <maximilian@faesslerweb.de>
  * @copyright HGON
  * @package HGON_HgonPayment
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Plan extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class PayPalProduct extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
 
     /**
-     * title
+     * name
      *
      * @var string
      */
-    protected $title = '';
+    protected $name = '';
 
     /**
      * description
@@ -41,56 +41,52 @@ class Plan extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $description = '';
 
     /**
-     * planId
-     * the paypal internal plan id
+     * type
      *
      * @var string
      */
-    protected $planId = '';
+    protected $type = '';
+
+    /**
+     * category
+     *
+     * @var string
+     */
+    protected $category = '';
+
+    /**
+     * sku
+     *
+     * @var string
+     */
+    protected $sku = '';
 
     /**
      * productId
-     * the defined product id. E.g. the internal name of an RkwProject
      *
      * @var string
      */
     protected $productId = '';
 
     /**
-     * status
-     * can be "CREATED", "INACTIVE" or "ACTIVE"
+     * Returns the name
      *
-     * @var string
+     * @return string $name
      */
-    protected $status = '';
-
-    /**
-     * data
-     * the paypal response array on creating the plan
-     *
-     * @var string
-     */
-    protected $data = '';
-
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle()
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
     }
 
     /**
-     * Sets the title
+     * Sets the name
      *
-     * @param string $title
+     * @param string $name
      * @return void
      */
-    public function setTitle($title)
+    public function setName($name)
     {
-        $this->title = $title;
+        $this->name = $name;
     }
 
     /**
@@ -115,24 +111,66 @@ class Plan extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Returns the planId
+     * Returns the type
      *
-     * @return string $planId
+     * @return string $type
      */
-    public function getPlanId()
+    public function getType()
     {
-        return $this->planId;
+        return $this->type;
     }
 
     /**
-     * Sets the planId
+     * Sets the type
      *
-     * @param string $planId
+     * @param string $type
      * @return void
      */
-    public function setPlanId($planId)
+    public function setType($type)
     {
-        $this->planId = $planId;
+        $this->type = $type;
+    }
+
+    /**
+     * Returns the category
+     *
+     * @return string $category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Sets the category
+     *
+     * @param string $category
+     * @return void
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * Returns the sku
+     *
+     * @return string $sku
+     */
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
+    /**
+     * Sets the sku
+     *
+     * @param string $sku
+     * @return void
+     */
+    public function setSku($sku)
+    {
+        $this->sku = $sku;
     }
 
     /**
@@ -154,48 +192,6 @@ class Plan extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setProductId($productId)
     {
         $this->productId = $productId;
-    }
-
-    /**
-     * Returns the status
-     *
-     * @return string $status
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Sets the status
-     *
-     * @param string $status
-     * @return void
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
-    /**
-     * Returns the data
-     *
-     * @return string $data
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * Sets the data
-     *
-     * @param string $data
-     * @return void
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
     }
 
 
