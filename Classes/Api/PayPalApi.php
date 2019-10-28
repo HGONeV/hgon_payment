@@ -302,7 +302,7 @@ class PayPalApi
                             'shipping' => $basket->getShippingCosts()
                         ]
                     ],
-                    'description' => 'Spende für den Naturschutz. HGON sagt DANKE!',
+                    'description' => 'HGON sagt DANKE!',
                     //    'custom' => 'This is a hidden value',
                     'invoice_number' => $basket->getInvoiceNumber(),
                     'soft_descriptor' => 'Übersicht',
@@ -426,10 +426,12 @@ class PayPalApi
         $data = [
             'plan_id' => $payPalPlan->getPlanId(),
             'quantity' => 1,
+            /*
             'application_context' => [
                 'return_url' => $returnUri,
                 'cancel_url' => 'http://hgon.rkw.local/mitmachen/'
             ]
+            */
         ];
 
         $url = $this->host . '/v1/billing/subscriptions';

@@ -274,8 +274,8 @@ class Basket extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             $item['name'] = $article->getName();
             $item['quantity'] = $article->getQuantity();
             $item['price'] = $article->getPrice();
-            $item['sku'] = $article->getSku();
-            $item['currency'] = $article->getCurrency();
+            $item['sku'] = $article->getSku() ? $article->getSku() : 'article' . $article->getUid();
+            $item['currency'] = $article->getCurrency() ? $article->getCurrency() : 'EUR';
             $articleList[] = $item;
         }
         return $articleList;
