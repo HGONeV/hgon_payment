@@ -20,6 +20,8 @@ plugin.tx_hgonpayment {
                 # cat=plugin.tx_hgonpayment//a; type=int; label=PayPal app secret
                 clientSecret =
             }
+            # cat=plugin.tx_hgonpayment//a; type=string; label=The URL the user is lead after cancelling payment process
+            cancelUrl =
         }
         # cat=plugin.tx_hgonpayment//a; type=int; label=PID of order page
         orderPid =

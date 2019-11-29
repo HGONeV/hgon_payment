@@ -325,7 +325,7 @@ class PayPalApi
             // 'note_to_payer' => 'Haben Sie fragen? Melden Sie sich gerne bei uns!',
             'redirect_urls' => [
                 'return_url' => $returnUri,
-                'cancel_url' => 'http://hgon.rkw.local/mitmachen/'
+                'cancel_url' => $settings['api']['cancelUrl']
             ]
         ];
 
@@ -422,16 +422,16 @@ class PayPalApi
             //===
         }
 
-        // @toDo: Create subscription by plan_id
+        // Create subscription by plan_id
         $data = [
             'plan_id' => $payPalPlan->getPlanId(),
-            'quantity' => 1,
-            /*
+            //'quantity' => 1,
             'application_context' => [
+
+                // IMPORTANT: A local URI with .local to the end was NOT supported by the sandbox for testing!!
                 'return_url' => $returnUri,
-                'cancel_url' => 'http://hgon.rkw.local/mitmachen/'
+                'cancel_url' => $settings['api']['cancelUrl']
             ]
-            */
         ];
 
         $url = $this->host . '/v1/billing/subscriptions';
@@ -452,7 +452,6 @@ class PayPalApi
         return $this->sendRequest();
         //===
     }
-
 
 
     /**
@@ -660,7 +659,10 @@ class PayPalApi
             }
 
             // log api internal error
-            if ($result->name == "VALIDATION_ERROR") {
+            if (
+                $result->name == "VALIDATION_ERROR"
+                || $result->name == "INVALID_REQUEST"
+            ) {
                 $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An internal PayPal-API error occurs on field "%s" with message "%s". Please check the configuration.', $result->details[0]->field, $result->details[0]->issue));
             }
             return $result;

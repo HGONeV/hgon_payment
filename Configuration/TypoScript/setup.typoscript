@@ -23,6 +23,7 @@ plugin.tx_hgonpayment {
                 clientId = {$plugin.tx_hgonpayment.settings.api.paypal.clientId}
                 clientSecret = {$plugin.tx_hgonpayment.settings.api.paypal.clientSecret}
             }
+            cancelUrl = {$plugin.tx_hgonpayment.settings.api.cancelUrl}
         }
         orderPid = {$plugin.tx_hgonpayment.settings.orderPid}
         subscriptionPid = {$plugin.tx_hgonpayment.settings.subscriptionPid}
