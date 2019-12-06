@@ -150,7 +150,8 @@ class Article extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements 
      */
     public function getPrice()
     {
-        return $this->price;
+        // american price format
+        return str_replace(',', '.', $this->price);
     }
 
     /**
