@@ -24,7 +24,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalplan'] = [
 			'disabled' => 'hidden',
 		],
 		'searchFields' => 'title,description, plan_id, product_id, status, data',
-		'iconfile' => 'EXT:hgon_template/Resources/Public/Icons/tx_hgonpayment_domain_model_paypalplan.gif'
+		'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_paypalplan.gif'
     ],
 	'interface' => [
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, visibility, title, description, plan_id, product_id, status, data',

@@ -24,7 +24,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paymentprofile'] = [
 			'disabled' => 'hidden',
 		],
 		'searchFields' => 'title,description, profile_id',
-		'iconfile' => 'EXT:hgon_template/Resources/Public/Icons/tx_hgonpayment_domain_model_paymentprofile.gif'
+		'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_paymentprofile.gif'
     ],
 	'interface' => [
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, visibility, title, description, profile_id',

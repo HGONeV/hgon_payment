@@ -24,7 +24,7 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalproduct'] = [
 			'disabled' => 'hidden',
 		],
 		'searchFields' => 'name, description, type, category, sku, product_id',
-		'iconfile' => 'EXT:hgon_template/Resources/Public/Icons/tx_hgonpayment_domain_model_paypalproduct.gif'
+		'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_paypalproduct.gif'
     ],
 	'interface' => [
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, visibility, name, description, type, category, sku, product_id',
