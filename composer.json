@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "typo3/cms-core": "^8.7.1"
+        "typo3/cms-core": "^8.7.1",
+        "mollie/mollie-api-php": "^2.0"
     },
     "autoload": {
         "psr-4": {

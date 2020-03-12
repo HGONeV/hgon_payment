@@ -13,22 +13,54 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 class PayPalApi
 {
     /**
-     * integer
+     * @var integer
      */
     const VAT = 19;
 
+    /**
+     * @var string
+     */
     const VERSION = '2';
 
+    /**
+     * @var string
+     */
     protected $clientId;
+
+    /**
+     * @var string
+     */
     protected $clientSecret;
+
+    /**
+     * @var string
+     */
     protected $authorization;
-    //protected $hostToken = 'https://api.sandbox.paypal.com/v1/oauth2/token';
-    protected $host = 'https://api.sandbox.paypal.com';
+
+    /**
+     * @var string
+     */
+    protected $host;
+
+    /**
+     * @var string
+     */
     protected $cUrl;
 
+    /**
+     * @var string
+     */
     protected $clientCredentials;
 
+    /**
+     * @var string
+     */
     protected $debug = true;
+
+    /**
+     * @var string
+     */
+    protected $context;
 
     /**
      * paymentProfile
@@ -47,7 +79,7 @@ class PayPalApi
     /**
      * cacheManager
      *
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var \TYPO3\CMS\Core\Cache\CacheManager
      */
     protected $cacheManager;
 
@@ -104,10 +136,22 @@ class PayPalApi
 
         $settings = $this->getSettings();
 
+        if (version_compare(TYPO3_version, '9.5.0', '<=')) {
+            $this->context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
+        } else {
+            $this->context = \TYPO3\CMS\Core\Core\Environment::getContext();
+        }
+
+        $this->host = $settings['api']['paypal']['apiUrl'];
         $this->clientId = $settings['api']['paypal']['clientId'];
         $this->clientSecret = $settings['api']['paypal']['clientSecret'];
-        $clientId = $settings['api']['paypal']['clientId'];
-        $clientSecret = $settings['api']['paypal']['clientSecret'];
+
+        // if dev: overwrite credentials
+        if ($this->context == "Development") {
+            $this->host = $settings['api']['paypal']['dev']['apiUrl'];
+            $this->clientId = $settings['api']['paypal']['dev']['clientId'];
+            $this->clientSecret = $settings['api']['paypal']['dev']['clientSecret'];
+        }
 
         if (
             false &&
@@ -129,7 +173,7 @@ class PayPalApi
                 curl_setopt($this->cUrl, CURLOPT_URL, $this->host . '/v1/oauth2/token');
                 curl_setopt($this->cUrl, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($this->cUrl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                curl_setopt($this->cUrl, CURLOPT_USERPWD, $clientId.":".$clientSecret);
+                curl_setopt($this->cUrl, CURLOPT_USERPWD, $this->clientId.":".$this->clientSecret);
                 curl_setopt($this->cUrl, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Accept-Language: en_US'));
 
                 $result = curl_exec($this->cUrl);
@@ -141,8 +185,19 @@ class PayPalApi
             } catch (\Exception $e) {
                 $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', str_replace(array("\n", "\r"), '', $e->getMessage())));
             }
-
         }
+
+        // check if we got any problem
+        if ($this->clientCredentials->error == 'invalid_client') {
+
+            // log
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', str_replace(array("\n", "\r"), '', $this->clientCredentials->error_description)));
+
+            // return error message
+            return $this->clientCredentials;
+            //===
+        }
+
         // create paypal profile, if not already existing
         $this->setCheckoutExperience();
     }
@@ -406,6 +461,18 @@ class PayPalApi
         $returnUri = $uriBuilder->reset()->setCreateAbsoluteUri(true)
             ->setTargetPageUid(intval($settings['subscriptionPid']))
             ->uriFor('confirmSubscription', null, 'PayPal', 'HgonPayment', 'Subscription');
+
+
+        // the api does not accept return urls without ".de" at the end
+        // because of this, the api throws error while testing. Use pseudo .de domain
+        if (
+            $this->context == "Development"
+            || $this->context == "Production/Staging"
+        ) {
+            // override returnUri
+            $returnUri = 'http://hgon.de/mitmachen/hgon-sagt-danke/';
+        }
+
 
         // get PayPalProduct by sku
         // -> create, if not exists

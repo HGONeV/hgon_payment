@@ -20,8 +20,22 @@ plugin.tx_hgonpayment {
     settings {
         api {
             paypal {
+                apiUrl = https://api.paypal.com
                 clientId = {$plugin.tx_hgonpayment.settings.api.paypal.clientId}
                 clientSecret = {$plugin.tx_hgonpayment.settings.api.paypal.clientSecret}
+                dev {
+                    apiUrl = https://api.sandbox.paypal.com
+                    clientId = {$plugin.tx_hgonpayment.settings.api.paypal.dev.clientId}
+                    clientSecret = {$plugin.tx_hgonpayment.settings.api.paypal.dev.clientSecret}
+                }
+            }
+            mollie {
+                clientId = {$plugin.tx_hgonpayment.settings.api.mollie.clientId}
+                clientSecret = {$plugin.tx_hgonpayment.settings.api.mollie.clientSecret}
+                dev {
+                    clientId = {$plugin.tx_hgonpayment.settings.api.mollie.dev.clientId}
+                    clientSecret = {$plugin.tx_hgonpayment.settings.api.mollie.dev.clientSecret}
+                }
             }
             cancelUrl = {$plugin.tx_hgonpayment.settings.api.cancelUrl}
         }
