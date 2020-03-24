@@ -8,7 +8,7 @@ if (!defined ('TYPO3_MODE')) {
 $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalproduct'] = [
 	'ctrl' => [
 	    'hideTable' => true,
-		'title'	=> 'LLL:EXT:hgon_template/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalproduct',
+		'title'	=> 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalproduct',
 		'label' => 'description',
 		'label_alt' => 'title',
 		'tstamp' => 'tstamp',

@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="tx_hgonpayment_domain_model_basket">
-				<source>Basket</source>
+				<source>HGON Payment: Basket</source>
 			</trans-unit>
 			<trans-unit id="tx_hgonpayment_domain_model_basket.decription">
 				<source>Decription</source>
@@ -16,7 +16,7 @@
 				<source>Invoice Number</source>
 			</trans-unit>
 			<trans-unit id="tx_hgonpayment_domain_model_basket.article">
-				<source>Article</source>
+				<source>HGON Payment: Article</source>
 			</trans-unit>
 			<trans-unit id="tx_hgonpayment_domain_model_article">
 				<source>Article</source>
@@ -50,26 +50,22 @@
             </trans-unit>
 
 
-			<trans-unit id="tx_hgontemplate_domain_model_paymentprofile">
-                <source>Payment profile</source>
-                <target>Händlerprofil</target>
+			<trans-unit id="tx_hgonpayment_domain_model_paymentprofile">
+                <source>HGON Payment: Payment profile</source>
             </trans-unit>
-            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.title">
+            <trans-unit id="tx_hgonpayment_domain_model_paymentprofile.title">
                 <source>Title</source>
-                <target>Titel</target>
             </trans-unit>
-            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.description">
+            <trans-unit id="tx_hgonpayment_domain_model_paymentprofile.description">
                 <source>Description</source>
-                <target>Beschreibung (Wussten Sie schon?)</target>
             </trans-unit>
-            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.profile_id">
+            <trans-unit id="tx_hgonpayment_domain_model_paymentprofile.profile_id">
                 <source>ProfileId</source>
-                <target>Profil ID</target>
             </trans-unit>
 
 
             <trans-unit id="tx_hgonpayment_domain_model_paypalproduct">
-                <source>Article</source>
+                <source>HGON Payment: Article</source>
             </trans-unit>
             <trans-unit id="tx_hgonpayment_domain_model_paypalproduct.name">
                 <source>Name</source>

@@ -4,8 +4,8 @@
 		<header/>
 		<body>
 			<trans-unit id="tx_hgonpayment_domain_model_basket">
-				<source>Basket</source>
-				<target>Einkaufskorb</target>
+				<source>HGON Payment: Basket</source>
+				<target>HGON Payment: Einkaufskorb</target>
 			</trans-unit>
 			<trans-unit id="tx_hgonpayment_domain_model_basket.decription">
 				<source>Decription</source>
@@ -24,8 +24,8 @@
 				<target>Artikel</target>
 			</trans-unit>
 			<trans-unit id="tx_hgonpayment_domain_model_article">
-				<source>Article</source>
-				<target>Artikel</target>
+				<source>HGON Payment: Article</source>
+				<target>HGON Payment: Artikel</target>
 			</trans-unit>
 			<trans-unit id="tx_hgonpayment_domain_model_article.name">
 				<source>Name</source>
@@ -65,27 +65,27 @@
             </trans-unit>
 
 
-			<trans-unit id="tx_hgontemplate_domain_model_paymentprofile">
-                <source>Payment profile</source>
-                <target>Händlerprofil</target>
+			<trans-unit id="tx_hgonpayment_domain_model_paymentprofile">
+                <source>HGON Payment: Payment profile</source>
+                <target>HGON Payment: Händlerprofil</target>
             </trans-unit>
-            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.title">
+            <trans-unit id="tx_hgonpayment_domain_model_paymentprofile.title">
                 <source>Title</source>
                 <target>Titel</target>
             </trans-unit>
-            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.description">
+            <trans-unit id="tx_hgonpayment_domain_model_paymentprofile.description">
                 <source>Description</source>
                 <target>Beschreibung (Wussten Sie schon?)</target>
             </trans-unit>
-            <trans-unit id="tx_hgontemplate_domain_model_paymentprofile.profile_id">
+            <trans-unit id="tx_hgonpayment_domain_model_paymentprofile.profile_id">
                 <source>ProfileId</source>
                 <target>Profil ID</target>
             </trans-unit>
 
 
             <trans-unit id="tx_hgonpayment_domain_model_paypalproduct">
-                <source>Article</source>
-                <target>Artikel</target>
+                <source>HGON Payment: PayPal product</source>
+                <target>HGON Payment: PayPal Produkt</target>
             </trans-unit>
             <trans-unit id="tx_hgonpayment_domain_model_paypalproduct.name">
                 <source>Name</source>
@@ -113,8 +113,8 @@
             </trans-unit>
 
             <trans-unit id="tx_hgonpayment_domain_model_paypalplan">
-                <source>Article</source>
-                <target>Artikel</target>
+                <source>HGON Payment: PayPal Plan</source>
+                <target>HGON Payment: PayPal Plan</target>
             </trans-unit>
             <trans-unit id="tx_hgonpayment_domain_model_paypalplan.title">
                 <source>Title</source>
