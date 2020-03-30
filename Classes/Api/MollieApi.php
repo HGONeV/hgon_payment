@@ -246,8 +246,6 @@ class MollieApi
                 ]
             );
 
-            DebuggerUtility::var_dump($subscription); exit;
-
             return $subscription;
             //===
         } catch (\Exception $e) {
