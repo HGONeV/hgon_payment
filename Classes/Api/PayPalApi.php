@@ -8,7 +8,6 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 /**
  * Created by PhpStorm.
  * User: Maximilian Fäßler
- * Date: 15.01.2018
  */
 class PayPalApi
 {
@@ -364,17 +363,6 @@ class PayPalApi
                     'item_list' => [
                         'items' => $basket->getArticleArrayForPayPal()
                     ],
-                    /*
-                    "shipping_address": {
-                        "recipient_name": "Betsy customer",
-                        "line1": "111 First Street",
-                        "city": "Saratoga",
-                        "country_code": "US",
-                        "postal_code": "95070",
-                        "phone": "0116519999164",
-                        "state": "CA"
-                      }
-                     */
                 ]
             ],
             // 'note_to_payer' => 'Haben Sie fragen? Melden Sie sich gerne bei uns!',

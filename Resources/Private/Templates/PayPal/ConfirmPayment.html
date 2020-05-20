@@ -1,6 +1,23 @@
 <div class="main__content">
     <section class="section">
         <div class="section__content">
+
+            <f:flashMessages as="flashMessages">
+                <f:for each="{flashMessages}" as="flashMessage">
+                    <div class="typo3-messages">
+                        <div class="alert alert-{flashMessage.class}">
+                            <div class="media">
+                                <div class="media-body">
+                                    <div class="message-error typo3-message">
+                                        <f:format.raw>{flashMessage.message}</f:format.raw>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:for>
+            </f:flashMessages>
+
             <div class="wrap wrap--text / align-center">
                 <h2>Bestellübersicht</h2>
 

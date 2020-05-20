@@ -8,7 +8,6 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 /**
  * Created by PhpStorm.
  * User: Maximilian Fäßler
- * Date: 15.01.2018
  */
 class MollieApi
 {
