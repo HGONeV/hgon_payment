@@ -8,9 +8,14 @@
     var ppp = PAYPAL.apps.PPP({
           "approvalUrl": "<f:format.raw>{approvalUrl}</f:format.raw>",
           "placeholder": "ppplus",
-          "mode": "{f:if(condition: '{v:context.get()} == \'Development\'', then: 'sandbox', else: 'live')}",
+          "mode": "sandbox",
           "country": "DE",
           "language": "DE",
           "useraction": "commit"
       });
 </script>
+
+<f:comment>
+
+    "mode": "{f:if(condition: '{v:context.get()} == \'Development\'', then: 'sandbox', else: 'live')}",
+</f:comment>

@@ -145,8 +145,11 @@ class PayPalApi
         $this->clientId = $settings['api']['paypal']['clientId'];
         $this->clientSecret = $settings['api']['paypal']['clientSecret'];
 
-        // if dev: overwrite credentials
-        if ($this->context == "Development") {
+        // if dev: overwrite credentials (also as fallback for STAGE: If no live clientId is set, use dev!)
+        if (
+            $this->context == "Development"
+            || (!$this->clientId)
+        ) {
             $this->host = $settings['api']['paypal']['dev']['apiUrl'];
             $this->clientId = $settings['api']['paypal']['dev']['clientId'];
             $this->clientSecret = $settings['api']['paypal']['dev']['clientSecret'];
