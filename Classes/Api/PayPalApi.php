@@ -180,6 +180,10 @@ class PayPalApi
 
                 $result = curl_exec($this->cUrl);
 
+                if (curl_error ($this->cUrl)) {
+                    // log
+                    $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', curl_error ($this->cUrl)));
+                }
                 // put array with access_token, refresh_token etc into variable
                 $this->clientCredentials = json_decode($result);
                 $this->clientCredentials->expiresInTstamp = time() + $this->clientCredentials->expires_in;
@@ -332,7 +336,6 @@ class PayPalApi
     public function createPayment(\HGON\HgonPayment\Domain\Model\Basket $basket)
     {
         $settings = $this->getSettings();
-
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         /** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
@@ -377,7 +380,6 @@ class PayPalApi
 
         $url = $this->host . '/v1/payments/payment';
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
-
         $curl = curl_init();
         try {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
