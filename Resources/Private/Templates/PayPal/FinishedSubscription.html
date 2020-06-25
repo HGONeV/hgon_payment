@@ -1,0 +1,40 @@
+<div class="main__content">
+    <section class="section">
+        <div class="section__content">
+            <div class="wrap wrap--text / align-center">
+
+                <f:if condition="{basket}">
+                    <f:else>
+                        <h1>Upps!</h1>
+                        <p>
+                            Da ist etwas schief gelaufen. Haben Sie die Seite ggf. manuell neu geladen? Schauen Sie einfach mal in Ihr Postfach, vielleicht finden sie dort bereits die Informationen, die Sie gesucht haben.
+                        </p>
+                    </f:else>
+                    <f:then>
+                        <h1>Wohooo!</h1>
+                        <f:for each="{basket.article}" as="article" iteration="iter">
+                            <f:if condition="{iter.isFirst}">
+                                <f:if condition="{article.isDonation}">
+                                    <f:then>
+                                        <p>
+                                            Ihr Beitrag ist die tägliche Triebfeder für unsere Arbeit. Wir bedanken uns sehr!
+                                        </p>
+                                    </f:then>
+                                    <f:else>
+                                        <p>
+                                            Ihre Bestellung ist eingegangen. Wir werden uns zeitnah darum kümmern.
+                                        </p>
+                                    </f:else>
+                                </f:if>
+                            </f:if>
+                        </f:for>
+                        <h4>Übersicht</h4>
+                        <f:render partial="PayPal/Order" arguments="{basket: basket}" />
+
+                    </f:then>
+                </f:if>
+
+            </div>
+        </div>
+    </section>
+</div>

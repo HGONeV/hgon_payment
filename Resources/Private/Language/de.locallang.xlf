@@ -81,6 +81,70 @@
                 <source>ProfileId</source>
                 <target>Profil ID</target>
             </trans-unit>
+
+
+
+            <!-- E-Mail subjects -->
+            <trans-unit id="rkwMailService.confirmationPayPalUser.subject" approved="yes">
+                <source>Thank You</source>
+                <target>Vielen Dank</target>
+            </trans-unit>
+            <trans-unit id="rkwMailService.confirmationPayPalAdmin.subject" approved="yes">
+                <source>New transaction</source>
+                <target>Neue Transaktion</target>
+            </trans-unit>
+            <trans-unit id="rkwMailService.confirmationPayPalAdmin.subject.1" approved="yes">
+                <source>New contribution</source>
+                <target>Neue Spende</target>
+            </trans-unit>
+            <trans-unit id="rkwMailService.confirmationPayPalAdmin.subject.2" approved="yes">
+                <source>New purchase</source>
+                <target>Artikel verkauft</target>
+            </trans-unit>
+
+            <!-- Templates/Email/ConfirmationPayPalUser.html -->
+            <trans-unit id="templates_email_confirmationPayPalUser.headline">
+                <source>Hello %s %s,</source>
+                <target>Hallo %s %s,</target>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalUser.text1">
+                <source>thank you for your contribution.</source>
+                <target>vielen Dank für Ihren Beitrag.</target>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalUser.text1.1">
+                <source>thank you for your contribution.</source>
+                <target>vielen Dank für Ihre Spende.</target>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalUser.text1.2">
+                <source>thank you for your purchase.</source>
+                <target>vielen Dank für Ihren Einkauf. Sofern es sich bei der Bestellung um Sachartikel handelt, senden wir Ihnen den Artikel zeitnah zu.</target>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalUser.text2">
+                <source>Please find below the details of your contribution.</source>
+                <target>Untenstehend finden Sie weitere Details. Bei Rückfragen können Sie einfach direkt auf diese E-Mail antworten.</target>
+            </trans-unit>
+
+            <!-- Templates/Email/ConfirmationPayPalAdmin.html -->
+            <trans-unit id="templates_email_confirmationPayPalAdmin.headline">
+                <source>Hello %s,</source>
+                <target>Hallo %s,</target>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalAdmin.text1">
+                <source>a new contribution has arrived.</source>
+                <target>eine neue Spende ist eingegangen.</target>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalAdmin.text1.1">
+                <source>a new contribution has arrived.</source>
+                <target>eine neue Spende ist eingegangen.</target>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalAdmin.text1.2">
+                <source>a new contribution has arrived.</source>
+                <target>ein Artikel wurde verkauft. Sofern es sich bei der Bestellung um Sachartikel handelt, sollte dieser möglichst bald an die untenstehende Adresse versendet versendet werden.</target>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalAdmin.text2">
+                <source>Please find below the details of your contribution.</source>
+                <target>Untenstehend finden Sie weitere Details. Wenn sie Kontakt zur unten genannten Person aufnehmen wollen, können Sie einfach direkt auf diese E-Mail antworten.</target>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -15,6 +15,8 @@ plugin.tx_hgonpayment {
     settings {
         api {
             paypal {
+                # cat=plugin.tx_hgonpayment//a; type=string; label=Use live credentials. Otherwise dev
+                live = 0
                 # cat=plugin.tx_hgonpayment//a; type=string; label=PayPal app base url
                 apiUrl =
                 # cat=plugin.tx_hgonpayment//a; type=int; label=PayPal app client id
@@ -31,6 +33,8 @@ plugin.tx_hgonpayment {
                 }
             }
             mollie {
+                # cat=plugin.tx_hgonpayment//a; type=string; label=Use live credentials. Otherwise dev
+                live = 0
                 # cat=plugin.tx_hgonpayment//a; type=int; label=Mollie app client id
                 clientId =
                 # cat=plugin.tx_hgonpayment//a; type=int; label=Mollie app secret
@@ -49,5 +53,7 @@ plugin.tx_hgonpayment {
         orderPid =
         # cat=plugin.tx_hgonpayment//a; type=int; label=PID of subscription page
         subscriptionPid =
+        # cat=plugin.tx_hgonpayment//a; type=int; label=the RkwAuthor which is contact person in email etc
+        rkwAuthorContactPerson =
     }
 }

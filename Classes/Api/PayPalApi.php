@@ -141,15 +141,12 @@ class PayPalApi
             $this->context = \TYPO3\CMS\Core\Core\Environment::getContext();
         }
 
-        $this->host = $settings['api']['paypal']['apiUrl'];
-        $this->clientId = $settings['api']['paypal']['clientId'];
-        $this->clientSecret = $settings['api']['paypal']['clientSecret'];
-
-        // if dev: overwrite credentials (also as fallback for STAGE: If no live clientId is set, use dev!)
-        if (
-            $this->context == "Development"
-            || (!$this->clientId)
-        ) {
+        // live app or develop
+        if ($settings['api']['paypal']['live']) {
+            $this->host = $settings['api']['paypal']['apiUrl'];
+            $this->clientId = $settings['api']['paypal']['clientId'];
+            $this->clientSecret = $settings['api']['paypal']['clientSecret'];
+        } else {
             $this->host = $settings['api']['paypal']['dev']['apiUrl'];
             $this->clientId = $settings['api']['paypal']['dev']['clientId'];
             $this->clientSecret = $settings['api']['paypal']['dev']['clientSecret'];
@@ -460,10 +457,10 @@ class PayPalApi
         // because of this, the api throws error while testing. Use pseudo .de domain
         if (
             $this->context == "Development"
-            || $this->context == "Production/Staging"
+            //|| $this->context == "Production/Staging"
         ) {
             // override returnUri
-            $returnUri = 'http://hgon.de/mitmachen/hgon-sagt-danke/';
+            $returnUri = 'http://stage.hgon.de/mitmachen/hgon-sagt-danke/';
         }
 
 
@@ -504,6 +501,38 @@ class PayPalApi
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        } catch (\Exception $e) {
+            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
+        }
+
+        $this->cUrl = $curl;
+        return $this->sendRequest();
+        //===
+    }
+
+
+
+    /**
+     * getSubscription
+     * get subscription data
+     *
+     * @param string $subscriptionId
+     *
+     * @return \stdClass|boolean
+     */
+    public function getSubscription($subscriptionId)
+    {
+        $settings = $this->getSettings();
+
+        $url = $this->host . '/v1/billing/subscriptions/' . $subscriptionId;
+        $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
+
+        $curl = curl_init();
+        try {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POST, 1);
         } catch (\Exception $e) {
             $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
         }

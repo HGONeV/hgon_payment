@@ -9,11 +9,11 @@ call_user_func(
             'HGON.HgonPayment',
             'Order',
             [
-                'PayPal' => 'confirmPayment, executePayment'
+                'PayPal' => 'confirmPayment, executePayment, finishedPayment'
             ],
             // non-cacheable actions
             [
-                'PayPal' => 'confirmPayment, executePayment'
+                'PayPal' => 'confirmPayment, executePayment, finishedPayment'
             ]
         );
 
@@ -21,11 +21,11 @@ call_user_func(
             'HGON.HgonPayment',
             'Subscription',
             [
-                'PayPal' => 'confirmSubscription, executeSubscription'
+                'PayPal' => 'confirmSubscription, executeSubscription, finishedSubscription'
             ],
             // non-cacheable actions
             [
-                'PayPal' => 'confirmSubscription, executeSubscription'
+                'PayPal' => 'confirmSubscription, executeSubscription, finishedSubscription'
             ]
         );
 

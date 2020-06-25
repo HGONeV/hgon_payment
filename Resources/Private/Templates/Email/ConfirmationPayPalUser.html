@@ -1,0 +1,25 @@
+{namespace vh=RKW\RkwMailer\ViewHelpers}
+{namespace vh1=RKW\RkwEvents\ViewHelpers}
+<f:layout name="Email/{mailType}" />
+
+
+<!-- PLAINTEXT -->
+<f:section name="Plaintext">
+<vh:frontend.translate key="templates_email_confirmationPayPalUser.headline" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" arguments="{0 : frontendUser.firstName, 1: frontendUser.lastName}" />
+
+<vh:frontend.translate key="templates_email_confirmationPayPalUser.text1.{paymentData.payment.isDonation}" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" />
+<vh:frontend.translate key="templates_email_confirmationPayPalUser.text2" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" />
+<f:render partial="Email/Details" section="Plaintext" arguments="{_all}"/>
+</f:section>
+
+<!-- HTML -->
+<f:section name="Html">
+	<h1><vh:frontend.translate key="templates_email_confirmationPayPalUser.headline" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" arguments="{0 : frontendUser.firstName, 1: frontendUser.lastName}" /></h1>
+	<p>
+		<vh:frontend.translate key="templates_email_confirmationPayPalUser.text1.{paymentData.payment.isDonation}" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" /><br>
+    </p>
+    <p>
+		<vh:frontend.translate key="templates_email_confirmationPayPalUser.text2" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" />
+	</p>
+	<f:render partial="Email/Details" section="Html" arguments="{_all}"/>
+</f:section>

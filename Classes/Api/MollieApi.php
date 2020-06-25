@@ -143,11 +143,11 @@ class MollieApi
             $this->context = \TYPO3\CMS\Core\Core\Environment::getContext();
         }
 
-        $this->clientId = $settings['api']['mollie']['clientId'];
-        $this->clientSecret = $settings['api']['mollie']['clientSecret'];
-
         // if dev: overwrite credentials
-        if ($this->context == "Development") {
+        if ($settings['api']['mollie']['live']) {
+            $this->clientId = $settings['api']['mollie']['clientId'];
+            $this->clientSecret = $settings['api']['mollie']['clientSecret'];
+        } else {
             $this->clientId = $settings['api']['mollie']['dev']['clientId'];
             $this->clientSecret = $settings['api']['mollie']['dev']['clientSecret'];
         }

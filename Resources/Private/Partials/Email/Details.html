@@ -1,0 +1,67 @@
+{namespace rkwMailer=RKW\RkwMailer\ViewHelpers}
+{namespace rkwEvents=RKW\RkwEvents\ViewHelpers}
+
+<!-- PLAINTEXT -->
+<f:section name="Plaintext">
+<f:if condition="{admin}">Plattform: {paymentData.payment.type}
+Kunden-ID: {paymentData.customer.id}</f:if>
+Versandadresse
+Name: {paymentData.customer.address.recipientName}
+Straße: {paymentData.customer.address.line1}
+PLZ: {paymentData.customer.address.postalCode}
+Stadt: {paymentData.customer.address.city}
+Bundesland: {paymentData.customer.address.state}
+Land: {paymentData.customer.address.countryCode}
+
+Name: {paymentData.customer.name}
+E-Mail: {paymentData.customer.email}
+Beitrag: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{paymentData.payment.amount.value}</f:format.currency>
+Zahlungsintervall: Einmalig
+<f:for each="{paymentData.articleList}" as="article">
+Name: {article.name}
+Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{article.price}</f:format.currency>
+</f:for>
+</f:section>
+
+
+<!-- HTML -->
+<f:section name="Html">
+    <f:if condition="{admin}">
+        <p>
+            Plattform: {paymentData.payment.type}
+            <br/>
+            Kunden-ID: {paymentData.customer.id}
+        </p>
+    </f:if>
+    <p>
+        <b>Versandadresse</b>
+    </p>
+    <p>
+        Name: {paymentData.customer.address.recipientName}
+        <br/>
+        Straße: {paymentData.customer.address.line1}
+        <br/>
+        PLZ: {paymentData.customer.address.postalCode}
+        <br/>
+        Stadt: {paymentData.customer.address.city}
+        <br/>
+        Bundesland: {paymentData.customer.address.state}
+        <br/>
+        Land: {paymentData.customer.address.countryCode}
+    </p>
+    <p>
+        Name: {paymentData.customer.name}
+        <br/>
+        E-Mail: {paymentData.customer.email}
+        <br/>
+        Beitrag: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{paymentData.payment.amount.value}</f:format.currency>
+    </p>
+    <p>
+        Zahlungsintervall: Einmalig
+    </p>
+    <f:for each="{paymentData.articleList}" as="article">
+        Produktname: {article.name} /
+        Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{article.price}</f:format.currency>
+    </f:for>
+    <br/>
+</f:section>

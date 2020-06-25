@@ -66,6 +66,50 @@
                 <source>ProfileId</source>
                 <target>Profil ID</target>
             </trans-unit>
+
+
+
+            <!-- E-Mail subjects -->
+            <trans-unit id="rkwMailService.confirmationPayPalUser.subject" approved="yes">
+                <source>Thank You</source>
+            </trans-unit>
+            <trans-unit id="rkwMailService.confirmationPayPalAdmin.subject" approved="yes">
+                <source>New contribution</source>
+            </trans-unit>
+
+            <!-- Templates/Email/ConfirmationUser.html -->
+            <trans-unit id="templates_email_confirmationPayPalUser.headline">
+                <source>Hello %s %s,</source>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalUser.text1">
+                <source>thank you for your contribution.</source>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalUser.text1.1">
+                <source>thank you for your contribution.</source>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalUser.text1.2">
+                <source>thank you for your contribution.</source>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalUser.text2">
+                <source>Please find below the details of your contribution.</source>
+            </trans-unit>
+
+            <!-- Templates/Email/ConfirmationAdmin.html -->
+            <trans-unit id="templates_email_confirmationPayPalAdmin.headline">
+                <source>Hello %s,</source>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalAdmin.text1">
+                <source>a new contribution has arrived.</source>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalAdmin.text1.1">
+                <source>a new contribution has arrived.</source>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalAdmin.text1.2">
+                <source>a new purchase has arrived.</source>
+            </trans-unit>
+            <trans-unit id="templates_email_confirmationPayPalAdmin.text2">
+                <source>Please find below the details of your contribution.</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -1,0 +1,22 @@
+{namespace vh=RKW\RkwMailer\ViewHelpers}
+<f:layout name="Email/{mailType}" />
+
+
+<!-- PLAINTEXT -->
+<f:section name="Plaintext">
+<vh:frontend.translate key="templates_email_confirmationPayPalAdmin.headline" languageKey="{language}" extensionName="hgonPayment" arguments="{0 : fullName}" />
+<vh:frontend.translate key="templates_email_confirmationPayPalAdmin.text1.{paymentData.payment.isDonation}" languageKey="{language}" extensionName="hgonPayment" />
+
+<vh:frontend.translate key="templates_email_confirmationPayPalAdmin.text2" languageKey="{language}" extensionName="hgonPayment" />
+<f:render partial="Email/Details" section="Plaintext" arguments="{_all}"/>
+</f:section>
+
+<!-- HTML -->
+<f:section name="Html">
+	<h1><vh:frontend.translate key="templates_email_confirmationPayPalAdmin.headline" languageKey="{language}" extensionName="hgonPayment" arguments="{0 : fullName}" /></h1>
+	<p><vh:frontend.translate key="templates_email_confirmationPayPalAdmin.text1.{paymentData.payment.isDonation}" languageKey="{language}" extensionName="hgonPayment" /></p>
+    <p class="important"><vh:frontend.translate key="templates_email_confirmationPayPalAdmin.text2" languageKey="{language}" extensionName="hgonPayment" /></p>
+
+    <f:render partial="Email/Details" section="Html" arguments="{_all}"/>
+
+</f:section>
