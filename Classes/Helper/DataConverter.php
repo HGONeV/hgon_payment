@@ -73,7 +73,11 @@ class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
         $i = 0;
         /** @var \HGON\HgonPayment\Domain\Model\Article $article */
         foreach ($basket->getArticle() as $article) {
+
+            // @toDo: Just iterate $article properties and set values automatically?
+
             $payPalDataArray['articleList'][$i]['name'] = $article->getName();
+            $payPalDataArray['articleList'][$i]['description'] = $article->getDescription();
             $payPalDataArray['articleList'][$i]['price'] = $article->getPrice();
             $payPalDataArray['articleList'][$i]['isDonation'] = $article->getIsDonation();
             $i++;

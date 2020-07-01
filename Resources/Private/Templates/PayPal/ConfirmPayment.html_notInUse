@@ -1,0 +1,79 @@
+<div class="main__content">
+    <section class="section">
+        <div class="section__content">
+
+            <f:flashMessages as="flashMessages">
+                <f:for each="{flashMessages}" as="flashMessage">
+                    <div class="typo3-messages">
+                        <div class="alert alert-{flashMessage.class}">
+                            <div class="media">
+                                <div class="media-body">
+                                    <div class="message-error typo3-message">
+                                        <f:format.raw>{flashMessage.message}</f:format.raw>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:for>
+            </f:flashMessages>
+
+            <div class="wrap wrap--text / align-center">
+                <h2>Bestellübersicht</h2>
+
+                <p>Prüfen Sie ihre Bestellung. Sind alle Angaben korrekt?</p>
+
+                <table class="table table--support-tasks tab__item-content">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Art</th>
+                            <th>Menge</th>
+                            <th>Preis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{basket.article}" as="article">
+                            <tr>
+                                <td>
+                                    {article.name}
+                                </td>
+                                <td>
+                                    Spende
+                                </td>
+                                <td>
+                                    <strong>{article.quantity}</strong>
+                                </td>
+                                <td>
+                                    <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">
+                                        {article.price}
+                                    </f:format.currency>
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th></th>
+                            <th></th>
+                            <th>
+                                <strong>
+                                    <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">
+                                        {total}
+                                    </f:format.currency>
+                                </strong>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+        <footer class="section__footer">
+            <div class="wrap wrap--text / align-center">
+                <f:link.action action="executePayment" class="btn btn--primary-outline btn--rounded">Zahlungspflichtig bestellen</f:link.action>
+            </div>
+        </footer>
+    </section>
+</div>

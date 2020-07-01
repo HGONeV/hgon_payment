@@ -9,7 +9,7 @@
 
 <vh:frontend.translate key="templates_email_confirmationPayPalUser.text1.{paymentData.payment.isDonation}" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" />
 <vh:frontend.translate key="templates_email_confirmationPayPalUser.text2" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" />
-<f:render partial="Email/Details" section="Plaintext" arguments="{_all}"/>
+<f:render partial="Email/DetailsPayment" section="Plaintext" arguments="{_all}"/>
 </f:section>
 
 <!-- HTML -->
@@ -21,5 +21,5 @@
     <p>
 		<vh:frontend.translate key="templates_email_confirmationPayPalUser.text2" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="hgonPayment" />
 	</p>
-	<f:render partial="Email/Details" section="Html" arguments="{_all}"/>
+	<f:render partial="Email/DetailsPayment" section="Html" arguments="{_all}"/>
 </f:section>

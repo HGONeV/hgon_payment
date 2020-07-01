@@ -14,7 +14,14 @@
                 {article.name}
             </td>
             <td>
-                Spende
+                <f:if condition="{article.isDonation}">
+                    <f:then>
+                        Spende
+                    </f:then>
+                    <f:else>
+                        Sach - / Dienstleistung
+                    </f:else>
+                </f:if>
             </td>
             <td>
                 <strong>{article.quantity}</strong>

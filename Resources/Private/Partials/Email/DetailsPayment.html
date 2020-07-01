@@ -20,6 +20,7 @@ Zahlungsintervall: Einmalig
 <f:for each="{paymentData.articleList}" as="article">
 Name: {article.name}
 Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{article.price}</f:format.currency>
+<f:if condition="{article.description}">Beschreibung: {article.description}</f:if>
 </f:for>
 </f:section>
 
@@ -60,8 +61,15 @@ Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="
         Zahlungsintervall: Einmalig
     </p>
     <f:for each="{paymentData.articleList}" as="article">
-        Produktname: {article.name} /
-        Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{article.price}</f:format.currency>
+        <p>
+            Produktname: {article.name} /
+            Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{article.price}</f:format.currency>
+        </p>
+        <f:if condition="{article.description}">
+            <p>
+                Beschreibung: {article.description}
+            </p>
+        </f:if>
     </f:for>
     <br/>
 </f:section>
