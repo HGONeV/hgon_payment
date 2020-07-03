@@ -44,6 +44,7 @@ plugin.tx_hgonpayment {
         orderPid = {$plugin.tx_hgonpayment.settings.orderPid}
         subscriptionPid = {$plugin.tx_hgonpayment.settings.subscriptionPid}
         rkwAuthorContactPerson = {$plugin.tx_hgonpayment.settings.rkwAuthorContactPerson}
+        backendUserContactPerson = {$plugin.tx_hgonpayment.settings.backendUserContactPerson}
     }
 }
 
