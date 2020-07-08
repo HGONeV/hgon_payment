@@ -452,7 +452,6 @@ class PayPalApi
             ->setTargetPageUid(intval($settings['subscriptionPid']))
             ->uriFor('confirmSubscription', null, 'PayPal', 'HgonPayment', 'Subscription');
 
-
         // the api does not accept return urls without ".de" at the end
         // because of this, the api throws error while testing. Use pseudo .de domain
         if (
@@ -479,12 +478,16 @@ class PayPalApi
             //===
         }
 
+        // active directyl with "SUBSCRIBE_NOW": https://developer.paypal.com/docs/platforms/subscriptions/#step-3-create-a-subscription
+        // (Optional) Use the application_context/user_action field to automatically activate subscriptions. Set the field to SUBSCRIBE_NOW or send it empty. The default value is SUBSCRIBE_NOW. Otherwise, you need to make a POST v1/billing/subscriptions/{ID}/activate call to activate the subscription.
+
         // Create subscription by plan_id
         $data = [
             'plan_id' => $payPalPlan->getPlanId(),
             //'quantity' => 1,
             'application_context' => [
-
+                'user_action' => 'SUBSCRIBE_NOW',
+                'shipping_preference' => 'NO_SHIPPING',
                 // IMPORTANT: A local URI with .local to the end was NOT supported by the sandbox for testing!!
                 'return_url' => $returnUri,
                 'cancel_url' => $settings['api']['cancelUrl']
@@ -515,6 +518,12 @@ class PayPalApi
     /**
      * getSubscription
      * get subscription data
+     * https://developer.paypal.com/docs/api/subscriptions/v1/#subscriptions_get
+     *
+     * example from paypal:
+     * https://api.sandbox.paypal.com/v1/billing/subscriptions/I-BW452GLLEP1G
+     * own url:
+     * https://api.sandbox.paypal.com/v1/billing/subscriptions/I-C0EYG31I8AKX
      *
      * @param string $subscriptionId
      *
@@ -522,8 +531,6 @@ class PayPalApi
      */
     public function getSubscription($subscriptionId)
     {
-        $settings = $this->getSettings();
-
         $url = $this->host . '/v1/billing/subscriptions/' . $subscriptionId;
         $authorization = 'Authorization: Bearer ' .  $this->clientCredentials->access_token;
 
@@ -532,12 +539,14 @@ class PayPalApi
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=UTF-8', $authorization));
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_HTTPGET, 1);
         } catch (\Exception $e) {
             $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
         }
 
+
         $this->cUrl = $curl;
+
         return $this->sendRequest();
         //===
     }
@@ -742,6 +751,7 @@ class PayPalApi
     {
         try{
             $result = json_decode(curl_exec($this->cUrl));
+
             // format messages from stdclass to array
             if (property_exists($result, 'messages')) {
                 $result->messages = (array)$result->messages;

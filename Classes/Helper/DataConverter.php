@@ -25,29 +25,6 @@ namespace HGON\HgonPayment\Helper;
 class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
-     * convert mollie subscription data to a small array
-     *
-     * @param \Mollie\Api\Resources\Subscription $mollieSubscription
-     * @param \Mollie\Api\Resources\Customer $mollieCustomer
-     * @return array
-     */
-    public function subscriptionMollie(\Mollie\Api\Resources\Subscription $mollieSubscription, \Mollie\Api\Resources\Customer $mollieCustomer)
-    {
-        $mollieDataArray = [];
-        $mollieDataArray['subscription']['type'] = 'Mollie';
-        $mollieDataArray['subscription']['amount']['value'] = $mollieSubscription->amount->value;
-        $mollieDataArray['subscription']['startDate'] = $mollieSubscription->startDate;
-
-        $mollieDataArray['customer']['id'] = $mollieCustomer->id;
-        $mollieDataArray['customer']['name'] = $mollieCustomer->name;
-        $mollieDataArray['customer']['email'] = $mollieCustomer->email;
-
-        return $mollieDataArray;
-        //===
-    }
-
-
-    /**
      * convert paypal payment data to a small array
      *
      * @param \stdClass $payPalPayment
@@ -57,6 +34,7 @@ class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
     public function paymentPayPal(\stdClass $payPalPayment, \HGON\HgonPayment\Domain\Model\Basket $basket)
     {
         $payPalDataArray = [];
+        $payPalDataArray['type'] = 'payment';
         $payPalDataArray['payment']['type'] = 'PayPal Payment';
         $payPalDataArray['payment']['amount']['value'] = $basket->getTotal();
 
@@ -87,6 +65,70 @@ class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         return $payPalDataArray;
+        //===
+    }
+
+
+
+    /**
+     * convert paypal payment data to a small array
+     *
+     * @param \stdClass $payPalSubscription
+     * @param \HGON\HgonPayment\Domain\Model\Basket $basket
+     * @return array
+     */
+    public function subscriptionPayPal(\stdClass $payPalSubscription, \HGON\HgonPayment\Domain\Model\Basket $basket)
+    {
+        $payPalDataArray = [];
+        $payPalDataArray['type'] = 'subscription';
+        $payPalDataArray['payment']['type'] = 'PayPal Subscription';
+        $payPalDataArray['payment']['amount']['value'] = $basket->getTotal();
+
+        $payPalDataArray['customer']['id'] = $payPalSubscription->subscriber->payer_id;
+        $payPalDataArray['customer']['name'] = $payPalSubscription->subscriber->name->given_name . ' ' . $payPalSubscription->subscriber->name->surname;
+        $payPalDataArray['customer']['email'] = $payPalSubscription->subscriber->email_address;
+
+        $i = 0;
+        /** @var \HGON\HgonPayment\Domain\Model\Article $article */
+        foreach ($basket->getArticle() as $article) {
+
+            // @toDo: Just iterate $article properties and set values automatically?
+
+            $payPalDataArray['articleList'][$i]['name'] = $article->getName();
+            $payPalDataArray['articleList'][$i]['description'] = $article->getDescription();
+            $payPalDataArray['articleList'][$i]['price'] = $article->getPrice();
+            $payPalDataArray['articleList'][$i]['isDonation'] = $article->getIsDonation();
+            $i++;
+
+            // Currently we have always only one article at once. So mark whole payment as donation or not (article sale)
+            $payPalDataArray['payment']['isDonation'] = $article->getIsDonation() ? 1 : 2;
+        }
+
+        return $payPalDataArray;
+        //===
+    }
+
+
+
+    /**
+     * convert mollie subscription data to a small array
+     *
+     * @param \Mollie\Api\Resources\Subscription $mollieSubscription
+     * @param \Mollie\Api\Resources\Customer $mollieCustomer
+     * @return array
+     */
+    public function subscriptionMollie(\Mollie\Api\Resources\Subscription $mollieSubscription, \Mollie\Api\Resources\Customer $mollieCustomer)
+    {
+        $mollieDataArray = [];
+        $mollieDataArray['subscription']['type'] = 'Mollie';
+        $mollieDataArray['subscription']['amount']['value'] = $mollieSubscription->amount->value;
+        $mollieDataArray['subscription']['startDate'] = $mollieSubscription->startDate;
+
+        $mollieDataArray['customer']['id'] = $mollieCustomer->id;
+        $mollieDataArray['customer']['name'] = $mollieCustomer->name;
+        $mollieDataArray['customer']['email'] = $mollieCustomer->email;
+
+        return $mollieDataArray;
         //===
     }
 }

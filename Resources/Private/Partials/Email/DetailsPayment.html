@@ -5,18 +5,11 @@
 <f:section name="Plaintext">
 <f:if condition="{admin}">Plattform: {paymentData.payment.type}
 Kunden-ID: {paymentData.customer.id}</f:if>
-Versandadresse
-Name: {paymentData.customer.address.recipientName}
-Straße: {paymentData.customer.address.line1}
-PLZ: {paymentData.customer.address.postalCode}
-Stadt: {paymentData.customer.address.city}
-Bundesland: {paymentData.customer.address.state}
-Land: {paymentData.customer.address.countryCode}
-
+<f:if condition="{paymentData.customer.address}"><f:if condition="{paymentData.payment.isDonation} == 2"><f:render section="addressPlain" arguments="{_all}" /></f:if></f:if>
 Name: {paymentData.customer.name}
 E-Mail: {paymentData.customer.email}
 Beitrag: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{paymentData.payment.amount.value}</f:format.currency>
-Zahlungsintervall: Einmalig
+Zahlungsintervall: <f:if condition="{paymentData.type} == 'payment'"><f:then>Einmalig</f:then><f:else>Monatlich</f:else></f:if>
 <f:for each="{paymentData.articleList}" as="article">
 Name: {article.name}
 Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{article.price}</f:format.currency>
@@ -34,22 +27,24 @@ Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="
             Kunden-ID: {paymentData.customer.id}
         </p>
     </f:if>
-    <p>
-        <b>Versandadresse</b>
-    </p>
-    <p>
-        Name: {paymentData.customer.address.recipientName}
-        <br/>
-        Straße: {paymentData.customer.address.line1}
-        <br/>
-        PLZ: {paymentData.customer.address.postalCode}
-        <br/>
-        Stadt: {paymentData.customer.address.city}
-        <br/>
-        Bundesland: {paymentData.customer.address.state}
-        <br/>
-        Land: {paymentData.customer.address.countryCode}
-    </p>
+    <f:if condition="{paymentData.customer.address}">
+        <f:if condition="{paymentData.payment.isDonation} == 2">
+            <p>
+                <b>Versandadresse</b>
+            </p>
+            <p>
+                Name: {paymentData.customer.address.recipientName}
+                <br/>
+                Straße: {paymentData.customer.address.line1}
+                <br/>
+                PLZ: {paymentData.customer.address.postalCode}
+                <br/>
+                Stadt: {paymentData.customer.address.city}
+                <br/>
+                Land: {paymentData.customer.address.countryCode}
+            </p>
+        </f:if>
+    </f:if>
     <p>
         Name: {paymentData.customer.name}
         <br/>
@@ -58,11 +53,11 @@ Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="
         Beitrag: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{paymentData.payment.amount.value}</f:format.currency>
     </p>
     <p>
-        Zahlungsintervall: Einmalig
+        Zahlungsintervall: <f:if condition="{paymentData.type} == 'payment'"><f:then>Einmalig</f:then><f:else>Monatlich</f:else></f:if>
     </p>
     <f:for each="{paymentData.articleList}" as="article">
         <p>
-            Produktname: {article.name} /
+            Name: {article.name} /
             Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2" currencySign="€">{article.price}</f:format.currency>
         </p>
         <f:if condition="{article.description}">
@@ -72,4 +67,14 @@ Preis: <f:format.currency decimalSeparator="," thousandsSeparator="." decimals="
         </f:if>
     </f:for>
     <br/>
+</f:section>
+
+
+<f:section name="addressPlain">
+    Versandadresse
+    Name: {paymentData.customer.address.recipientName}
+    Straße: {paymentData.customer.address.line1}
+    PLZ: {paymentData.customer.address.postalCode}
+    Stadt: {paymentData.customer.address.city}
+    Land: {paymentData.customer.address.countryCode}
 </f:section>
