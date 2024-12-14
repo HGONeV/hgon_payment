@@ -11,7 +11,6 @@
                         </p>
                     </f:else>
                     <f:then>
-                        <h1>Wohooo!</h1>
                         <f:for each="{basket.article}" as="article" iteration="iter">
                             <f:if condition="{iter.isFirst}">
                                 <f:if condition="{article.isDonation}">
@@ -22,7 +21,7 @@
                                     </f:then>
                                     <f:else>
                                         <p>
-                                            Ihre Bestellung ist eingegangen. Wir werden uns zeitnah darum kümmern.
+                                            Das hat funktioniert, vielen Dank.
                                         </p>
                                     </f:else>
                                 </f:if>
