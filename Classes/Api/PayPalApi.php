@@ -102,28 +102,48 @@ class PayPalApi
     protected $cacheDataIdentifier = "clientCredentials";
 
     /**
-     * PersistenceManager
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     */
-    protected $persistenceManager;
-
-    /**
      * Logger
      *
      * @var \TYPO3\CMS\Core\Log\Logger
      */
     protected $logger;
 
+    /**
+     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
+    protected $contentObjectRenderer;
 
-    private function initializeCache() {
-        // initialize caching
-        $this->cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache($this->cacheIdentifier);
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\Extbase\\Object\\ObjectManager');
-        $configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
-        $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-        $this->cObj = $configurationManager->getContentObject();
+    /**
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer
+     */
+    public function injectContentObjectRenderer(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer): void {
+        $this->contentObjectRenderer = $contentObjectRenderer;
     }
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager): void {
+        $this->configurationManager = $configurationManager;
+    }
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     */
+    protected $persistenceManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager
+     */
+    public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager): void {
+        $this->persistenceManager = $persistenceManager;
+    }
+
 
     /**
      * Constructor
@@ -131,7 +151,7 @@ class PayPalApi
      */
     public function __construct()
     {
-        $this->initializeCache();
+        $this->cObj = $this->contentObjectRenderer;
 
         $settings = $this->getSettings();
 
@@ -198,7 +218,6 @@ class PayPalApi
 
             // return error message
             return $this->clientCredentials;
-            //===
         }
 
         // create paypal profile, if not already existing
@@ -228,13 +247,12 @@ class PayPalApi
     {
         // Either: Check for existing profile
         /** @var \HGON\HgonPayment\Domain\Repository\PaymentProfileRepository $paymentProfileRepository */
-        $paymentProfileRepository = $this->objectManager->get('HGON\\HgonPayment\\Domain\\Repository\\PaymentProfileRepository');
+        $paymentProfileRepository = $this->objectManager->get(\HGON\HgonPayment\Domain\Repository\PaymentProfileRepository::class);
         $profile = $paymentProfileRepository->findByTitle('paypal')->getFirst();
 
         if ($profile instanceof \HGON\HgonPayment\Domain\Model\PaymentProfile) {
             $this->setPaymentProfile($profile);
             return $profile;
-            //===
         }
 
         // Or: Create new profile
@@ -245,7 +263,7 @@ class PayPalApi
         // https://stackoverflow.com/questions/40038638/resize-image-in-custom-viewhelper
         $imageUri = '';
         try {
-            $imageService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Service\\ImageService');
+            $imageService = $this->objectManager->get(\TYPO3\CMS\Extbase\Service\ImageService::class);
             $image = $imageService->getImage($logoImageUrl, null, 0);
             $imageUri = $imageService->getImageUri($image, true);
         } catch (\Exception $e) {
@@ -285,7 +303,7 @@ class PayPalApi
 
         // this profile should only created once. Save result (experience_profile_id) in DB!
         /** @var \HGON\HgonPayment\Domain\Model\PaymentProfile $paymentProfile */
-        $paymentProfile = $this->objectManager->get('HGON\\HgonPayment\\Domain\\Model\\PaymentProfile');
+        $paymentProfile = $this->objectManager->get(\HGON\HgonPayment\Domain\Model\PaymentProfile::class);
         $paymentProfile->setTitle('paypal');
         $paymentProfile->setDescription($brandName);
         $paymentProfile->setProfileId($result->id);
@@ -295,7 +313,6 @@ class PayPalApi
 
         $this->setPaymentProfile($paymentProfile);
         return $paymentProfile;
-        //===
     }
 
 
@@ -318,7 +335,6 @@ class PayPalApi
 
         $this->cUrl = $curl;
         return $this->sendRequest();
-        //===
     }
 
 
@@ -334,9 +350,9 @@ class PayPalApi
     {
         $settings = $this->getSettings();
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = $objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+        $uriBuilder = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $returnUri = $uriBuilder->reset()->setCreateAbsoluteUri(true)
             ->setTargetPageUid(intval($settings['orderPid']))
             ->uriFor('confirmPayment', null, 'PayPal', 'HgonPayment', 'Order');
@@ -391,7 +407,6 @@ class PayPalApi
 
         $this->cUrl = $curl;
         return $this->sendRequest();
-        //===
     }
 
 
@@ -427,7 +442,6 @@ class PayPalApi
 
         $this->cUrl = $curl;
         return $this->sendRequest();
-        //===
     }
 
 
@@ -445,9 +459,9 @@ class PayPalApi
         $settings = $this->getSettings();
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = $objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+        $uriBuilder = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $returnUri = $uriBuilder->reset()->setCreateAbsoluteUri(true)
             ->setTargetPageUid(intval($settings['subscriptionPid']))
             ->uriFor('confirmSubscription', null, 'PayPal', 'HgonPayment', 'Subscription');
@@ -475,7 +489,6 @@ class PayPalApi
         if (! ($payPalPlan instanceof \HGON\HgonPayment\Domain\Model\PayPalPlan)) {
             $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('Cannot fetch PayPalPlan for Article with UID "%s". Please check the configuration.', $article->getUid()));
             return false;
-            //===
         }
 
         // active directyl with "SUBSCRIBE_NOW": https://developer.paypal.com/docs/platforms/subscriptions/#step-3-create-a-subscription
@@ -510,7 +523,6 @@ class PayPalApi
 
         $this->cUrl = $curl;
         return $this->sendRequest();
-        //===
     }
 
 
@@ -544,11 +556,9 @@ class PayPalApi
             $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $url, $e->getMessage()));
         }
 
-
         $this->cUrl = $curl;
 
         return $this->sendRequest();
-        //===
     }
 
 
@@ -564,9 +574,9 @@ class PayPalApi
     protected function getPayPalProduct(\HGON\HgonPayment\Domain\Model\Article $article)
     {
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \HGON\HgonPayment\Domain\Repository\PayPalProductRepository $payPalProductRepository */
-        $payPalProductRepository = $objectManager->get('HGON\\HgonPayment\\Domain\\Repository\\PayPalProductRepository');
+        $payPalProductRepository = $objectManager->get(\HGON\HgonPayment\Domain\Repository\PayPalProductRepository::class);
 
         $payPalProduct = $payPalProductRepository->findBySku($article->getSku());
         if (! ($payPalProduct instanceof \HGON\HgonPayment\Domain\Model\PayPalProduct)) {
@@ -599,7 +609,7 @@ class PayPalApi
 
             // Create PayPalProduct
             /** @var \HGON\HgonPayment\Domain\Model\PayPalProduct $newPayPalProduct */
-            $newPayPalProduct = $objectManager->get('HGON\\HgonPayment\\Domain\\Model\\PayPalProduct');
+            $newPayPalProduct = $objectManager->get(\HGON\HgonPayment\Domain\Model\PayPalProduct::class);
             $newPayPalProduct->setName($request->name);
             $newPayPalProduct->setDescription($request->description);
             $newPayPalProduct->setType($request->type);
@@ -610,15 +620,13 @@ class PayPalApi
             $payPalProductRepository->add($newPayPalProduct);
 
             /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
-            $persistenceManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+            $persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
             $persistenceManager->persistAll();
 
             return $newPayPalProduct;
-            //===
         }
 
         return $payPalProduct;
-        //===
     }
 
 
@@ -636,9 +644,9 @@ class PayPalApi
     protected function getPayPalPlan(\HGON\HgonPayment\Domain\Model\PayPalProduct $payPalProduct, \HGON\HgonPayment\Domain\Model\Article $article = null)
     {
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \HGON\HgonPayment\Domain\Repository\PayPalPlanRepository $payPalPlanRepository */
-        $payPalPlanRepository = $objectManager->get('HGON\\HgonPayment\\Domain\\Repository\\PayPalPlanRepository');
+        $payPalPlanRepository = $objectManager->get(\HGON\HgonPayment\Domain\Repository\PayPalPlanRepository::class);
 
         /** @var \HGON\HgonPayment\Domain\Model\PayPalPlan $payPalPlan */
         $payPalPlan = $payPalPlanRepository->findByProductId($payPalProduct->getProductId());
@@ -650,7 +658,7 @@ class PayPalApi
             // if the article is a donation, there will be no article in database
             if (! ($article instanceof \HGON\HgonPayment\Domain\Model\Article)) {
                 /** @var \HGON\HgonPayment\Domain\Repository\ArticleRepository $articleRepository */
-                $articleRepository = $objectManager->get('HGON\\HgonPayment\\Domain\\Repository\\ArticleRepository');
+                $articleRepository = $objectManager->get(\HGON\HgonPayment\Domain\Repository\ArticleRepository::class);
                 /** @var \HGON\HgonPayment\Domain\Model\Article $article */
                 $article = $articleRepository->findBySku($payPalProduct->getSku());
             }
@@ -720,7 +728,7 @@ class PayPalApi
 
             // Create PayPalProduct
             /** @var \HGON\HgonPayment\Domain\Model\PayPalPlan $newPayPalPlan */
-            $newPayPalPlan = $objectManager->get('HGON\\HgonPayment\\Domain\\Model\\PayPalPlan');
+            $newPayPalPlan = $objectManager->get(\HGON\HgonPayment\Domain\Model\PayPalPlan::class);
             $newPayPalPlan->setTitle($request->name);
             $newPayPalPlan->setDescription($request->description);
             $newPayPalPlan->setPlanId($request->id);
@@ -729,15 +737,13 @@ class PayPalApi
             $payPalPlanRepository->add($newPayPalPlan);
 
             /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
-            $persistenceManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+            $persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
             $persistenceManager->persistAll();
 
             return $newPayPalPlan;
-            //===
         }
 
         return $payPalPlan;
-        //===
     }
 
 
@@ -765,12 +771,10 @@ class PayPalApi
                 $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An internal PayPal-API error occurs on field "%s" with message "%s". Please check the configuration.', $result->details[0]->field, $result->details[0]->issue));
             }
             return $result;
-            //===
         }
         catch(\Exception $e){
             $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to make following api call "%s". Please check the configuration. Error: %s', $this->cUrl, $e->getMessage()));
             return FALSE;
-            //===
         }
     }
 
@@ -786,7 +790,6 @@ class PayPalApi
     protected function getSettings($which = ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS)
     {
         return Common::getTyposcriptConfiguration('Hgonpayment', $which);
-        //===
     }
 
 
@@ -799,7 +802,7 @@ class PayPalApi
     private function getLogger()
     {
         if (!$this->logger instanceof \TYPO3\CMS\Core\Log\Logger) {
-            $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+            $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
         }
 
         return $this->logger;

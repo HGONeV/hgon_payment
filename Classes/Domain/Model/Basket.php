@@ -42,7 +42,7 @@ class Basket extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * article
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\HGON\HgonPayment\Domain\Model\Article>
-     * @cascade remove
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
      */
     protected $article = null;
 

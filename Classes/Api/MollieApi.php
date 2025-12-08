@@ -97,13 +97,6 @@ class MollieApi
     protected $cacheDataIdentifier = "clientCredentials";
 
     /**
-     * PersistenceManager
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     */
-    protected $persistenceManager;
-
-    /**
      * Logger
      *
      * @var \TYPO3\CMS\Core\Log\Logger
@@ -117,15 +110,42 @@ class MollieApi
      */
     protected $mollie;
 
+    /**
+     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
+    protected $contentObjectRenderer;
 
-    private function initializeCache() {
-        // initialize caching
-        $this->cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache($this->cacheIdentifier);
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\Extbase\\Object\\ObjectManager');
-        $configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
-        $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-        $this->cObj = $configurationManager->getContentObject();
+    /**
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer
+     */
+    public function injectContentObjectRenderer(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer): void {
+        $this->contentObjectRenderer = $contentObjectRenderer;
     }
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager): void {
+        $this->configurationManager = $configurationManager;
+    }
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     */
+    protected $persistenceManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager
+     */
+    public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager): void {
+        $this->persistenceManager = $persistenceManager;
+    }
+
 
     /**
      * Constructor
@@ -133,7 +153,7 @@ class MollieApi
      */
     public function __construct()
     {
-        $this->initializeCache();
+        $this->cObj = $this->contentObjectRenderer;
 
         $settings = $this->getSettings();
 
@@ -152,7 +172,7 @@ class MollieApi
             $this->clientSecret = $settings['api']['mollie']['dev']['clientSecret'];
         }
 
-        $this->mollie = $this->objectManager->get('Mollie\\Api\\MollieApiClient');
+        $this->mollie = $this->objectManager->get(\Mollie\Api\MollieApiClient::Class);
         $this->mollie->setApiKey($this->clientSecret);
 
     }
@@ -266,7 +286,6 @@ class MollieApi
     protected function getSettings($which = ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS)
     {
         return Common::getTyposcriptConfiguration('Hgonpayment', $which);
-        //===
     }
 
 
@@ -279,11 +298,10 @@ class MollieApi
     private function getLogger()
     {
         if (!$this->logger instanceof \TYPO3\CMS\Core\Log\Logger) {
-            $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+            $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
         }
 
         return $this->logger;
-        //===
     }
 
 }

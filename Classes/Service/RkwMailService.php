@@ -30,7 +30,7 @@ use RKW\RkwEvents\Helper\DivUtility;
  */
 class RkwMailService implements \TYPO3\CMS\Core\SingletonInterface
 {
-    
+
     /**
      * Handles confirm mail for user
      *
@@ -98,7 +98,7 @@ class RkwMailService implements \TYPO3\CMS\Core\SingletonInterface
         if ($settings['view']['templateRootPaths']) {
 
             /** @var \RKW\RkwMailer\Service\MailService $mailService */
-            $mailService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('RKW\\RkwMailer\\Service\\MailService');
+            $mailService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\RKW\RkwMailer\Service\MailService::class);
 
             // send new user an email with token
             $mailService->setTo($frontendUser, array(
@@ -165,7 +165,7 @@ class RkwMailService implements \TYPO3\CMS\Core\SingletonInterface
         if ($settings['view']['templateRootPaths']) {
 
             /** @var \RKW\RkwMailer\Service\MailService $mailService */
-            $mailService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('RKW\\RkwMailer\\Service\\MailService');
+            $mailService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\RKW\RkwMailer\Service\MailService::class);
 
             foreach ($recipients as $recipient) {
 
@@ -244,6 +244,5 @@ class RkwMailService implements \TYPO3\CMS\Core\SingletonInterface
     protected function getSettings($which = ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS)
     {
         return Common::getTyposcriptConfiguration('Hgonpayment', $which);
-        //===
     }
 }

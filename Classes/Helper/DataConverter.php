@@ -65,7 +65,6 @@ class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         return $payPalDataArray;
-        //===
     }
 
 
@@ -105,7 +104,6 @@ class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         return $payPalDataArray;
-        //===
     }
 
 
@@ -129,6 +127,5 @@ class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
         $mollieDataArray['customer']['email'] = $mollieCustomer->email;
 
         return $mollieDataArray;
-        //===
     }
 }
