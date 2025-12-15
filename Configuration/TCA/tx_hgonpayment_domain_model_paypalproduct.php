@@ -26,17 +26,14 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalproduct'] = [
 		'searchFields' => 'name, description, type, category, sku, product_id',
 		'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_paypalproduct.gif'
     ],
-	'interface' => [
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, visibility, name, description, type, category, sku, product_id',
-    ],
 	'types' => [
-		'1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --palette--;;1,visibility, name, description, type, category, sku, product_id,'],
+		'1' => ['showitem' => 'sys_language_uid, l10n_diffsource, hidden, --palette--;;1,visibility, name, description, type, category, sku, product_id,'],
 	],
 	'palettes' => [
 		'1' => ['showitem' => ''],
 	],
 	'columns' => [
-	
+
 		'sys_language_uid' => [
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
@@ -53,7 +50,6 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalproduct'] = [
         ],
 		'l10n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',

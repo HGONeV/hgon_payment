@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') || die('Access denied.');
 
 call_user_func(
-    function()
+    function($extKey)
     {
 
 
@@ -12,5 +12,6 @@ call_user_func(
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_hgonpayment_domain_model_article', 'EXT:hgon_payment/Resources/Private/Language/locallang_csh_tx_hgonpayment_domain_model_article.xlf');
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_hgonpayment_domain_model_article');
 
-    }
+    },
+    'hgon_donation'
 );

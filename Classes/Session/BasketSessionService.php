@@ -1,63 +1,97 @@
 <?php
+
 declare(strict_types=1);
 
 namespace HGON\HgonPayment\Session;
 
 use HGON\HgonPayment\Domain\Model\Basket;
+use TYPO3\CMS\Core\Session\SessionManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
-class BasketSessionService
+final class BasketSessionService
 {
     private const KEY = 'hgon_payment_basket';
 
     /**
-     * Basket in der Session speichern
-     *
-     * @param \HGON\HgonPayment\Domain\Model\Basket $basket
+     * Basket in der Session speichern.
+     * TYPO3 10: storeSessionData() ist entfernt – setKey() reicht i.d.R., Persistenz passiert am Request-Ende.
      */
     public function setBasket(Basket $basket): void
     {
-        $feUser = $this->getFeUser();
-        // TYPO3 serialisiert das Objekt intern, das ist in 9.5 okay
+        $feUser = $this->getFeUserOrNull();
+        if (!$feUser) {
+            return;
+        }
+
         $feUser->setKey('ses', self::KEY, $basket);
-        $feUser->storeSessionData();
+
+        // Optional: nur nötig, wenn du danach sofort einen Redirect machst oder
+        // im gleichen Request garantiert wieder lesen musst.
+        $this->persistFrontendUserSessionIfPossible($feUser);
     }
 
     /**
-     * Basket aus der Session holen
-     *
-     * @return \HGON\HgonPayment\Domain\Model\Basket|null
+     * Basket aus der Session holen.
      */
     public function getBasket(): ?Basket
     {
-        $feUser = $this->getFeUser();
-        $value = $feUser->getKey('ses', self::KEY);
-
-        if ($value instanceof Basket) {
-            return $value;
+        $feUser = $this->getFeUserOrNull();
+        if (!$feUser) {
+            return null;
         }
 
-        // Falls noch alte Array-Daten in der Session hängen:
-        return null;
+        $value = $feUser->getKey('ses', self::KEY);
+
+        return $value instanceof Basket ? $value : null;
     }
 
     /**
-     * Basket aus der Session löschen
+     * Basket aus der Session löschen.
      */
     public function clearBasket(): void
     {
-        $feUser = $this->getFeUser();
+        $feUser = $this->getFeUserOrNull();
+        if (!$feUser) {
+            return;
+        }
+
         $feUser->setKey('ses', self::KEY, null);
-        $feUser->storeSessionData();
+
+        // Optional wie oben
+        $this->persistFrontendUserSessionIfPossible($feUser);
     }
 
     /**
-     * FE-User aus TSFE holen (9.5-kompatibel)
+     * FE-User holen (TYPO3 10.4: TSFE ist legacy, aber noch verfügbar im FE).
+     * Rückgabe null, wenn kein FE-Kontext vorhanden ist.
      */
-    private function getFeUser(): FrontendUserAuthentication
+    private function getFeUserOrNull(): ?FrontendUserAuthentication
     {
-        /** @var FrontendUserAuthentication $feUser */
-        $feUser = $GLOBALS['TSFE']->fe_user;
-        return $feUser;
+        $tsfe = $GLOBALS['TSFE'] ?? null;
+        $feUser = $tsfe->fe_user ?? null;
+
+        return $feUser instanceof FrontendUserAuthentication ? $feUser : null;
+    }
+
+    /**
+     * Ersatz für storeSessionData(): Persistierung über SessionManager.
+     * Robust: nur wenn Session-Objekt vorhanden ist.
+     */
+    private function persistFrontendUserSessionIfPossible(FrontendUserAuthentication $feUser): void
+    {
+        // TYPO3 10.4 hat i.d.R. getSession(); defensiv bleiben, falls nicht.
+        if (!method_exists($feUser, 'getSession')) {
+            return;
+        }
+
+        $session = $feUser->getSession();
+        if ($session === null) {
+            return;
+        }
+
+        /** @var SessionManager $sessionManager */
+        $sessionManager = GeneralUtility::makeInstance(SessionManager::class);
+        $sessionManager->updateSession($session);
     }
 }

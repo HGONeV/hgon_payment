@@ -19,11 +19,8 @@ return [
         'searchFields' => 'name,description,quantity,price,sku,currency,is_donation',
         'iconfile' => 'EXT:hgon_payment/Resources/Public/Icons/tx_hgonpayment_domain_model_article.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, quantity, price, vat, shipping, sku, currency, is_donation',
-    ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, price, vat, shipping, sku, currency, is_donation, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
+        '1' => ['showitem' => 'sys_language_uid, l10n_diffsource, hidden, name, description, price, vat, shipping, sku, currency, is_donation, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -45,7 +42,6 @@ return [
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
@@ -203,7 +199,7 @@ return [
                 'default' => 0
             )
         ),
-    
+
         'tx_basket' => [
             'config' => [
                 'type' => 'passthrough',

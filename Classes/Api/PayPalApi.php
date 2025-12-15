@@ -1,7 +1,7 @@
 <?php
 namespace HGON\HgonPayment\Api;
 
-use \RKW\RkwBasics\Helper\Common;
+use \HGON\HgonTemplate\Utility\Common;
 use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
@@ -155,11 +155,7 @@ class PayPalApi
 
         $settings = $this->getSettings();
 
-        if (version_compare(TYPO3_version, '9.5.0', '<=')) {
-            $this->context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
-        } else {
-            $this->context = \TYPO3\CMS\Core\Core\Environment::getContext();
-        }
+        $this->context = \TYPO3\CMS\Core\Core\Environment::getContext();
 
         // live app or develop
         if ($settings['api']['paypal']['live']) {
