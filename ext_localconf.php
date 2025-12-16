@@ -9,11 +9,11 @@ call_user_func(
             'HGON.HgonPayment',
             'Order',
             [
-                'PayPal' => 'confirmPayment, executePayment, finishedPayment'
+                \HGON\HgonPayment\Controller\PayPalController::class => 'confirmPayment, executePayment, finishedPayment'
             ],
             // non-cacheable actions
             [
-                'PayPal' => 'confirmPayment, executePayment, finishedPayment'
+                \HGON\HgonPayment\Controller\PayPalController::class => 'confirmPayment, executePayment, finishedPayment'
             ]
         );
 
@@ -21,11 +21,11 @@ call_user_func(
             'HGON.HgonPayment',
             'Subscription',
             [
-                'PayPal' => 'confirmSubscription, executeSubscription, finishedSubscription'
+                \HGON\HgonPayment\Controller\PayPalController::class => 'confirmSubscription, executeSubscription, finishedSubscription'
             ],
             // non-cacheable actions
             [
-                'PayPal' => 'confirmSubscription, executeSubscription, finishedSubscription'
+                \HGON\HgonPayment\Controller\PayPalController::class => 'confirmSubscription, executeSubscription, finishedSubscription'
             ]
         );
 
@@ -35,7 +35,7 @@ call_user_func(
             $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] = array();
         }
         if( !isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] ) ) {
-            $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] = 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend';
+            $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] = \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class;
         }
         if( !isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['options'] ) ) {
             $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['options'] = array('defaultLifetime' => 3600);
@@ -58,7 +58,7 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['HGON']['HgonPayment']['writerConfiguration']
     // levels with higher severity (ERROR, CRITICAL, EMERGENCY)
     \TYPO3\CMS\Core\Log\LogLevel::WARNING => array(
         // add a FileWriter
-        'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => array(
+        \TYPO3\CMS\Core\Log\Writer\FileWriter::class => array(
             // configuration for the writer
             'logFile' => 'typo3temp/logs/tx_hgonpayment.log'
         )
