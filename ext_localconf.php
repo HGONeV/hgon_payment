@@ -1,12 +1,15 @@
 <?php
-defined('TYPO3_MODE') || die('Access denied.');
+
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+
+defined('TYPO3') or die("Access denied.");
 
 call_user_func(
     function($extKey)
     {
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'HGON.HgonPayment',
+            $extKey,
             'Order',
             [
                 \HGON\HgonPayment\Controller\PayPalController::class => 'confirmPayment, executePayment, finishedPayment'
@@ -18,7 +21,7 @@ call_user_func(
         );
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'HGON.HgonPayment',
+            $extKey,
             'Subscription',
             [
                 \HGON\HgonPayment\Controller\PayPalController::class => 'confirmSubscription, executeSubscription, finishedSubscription'
@@ -31,18 +34,15 @@ call_user_func(
 
 
         // caching
-        if( !is_array($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] ) ) {
-            $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] = array();
+        $cacheConfigurations =& $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+
+        if (!isset($cacheConfigurations[$extKey]) || !is_array($cacheConfigurations[$extKey])) {
+            $cacheConfigurations[$extKey] = [];
         }
-        if( !isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] ) ) {
-            $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] = \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class;
-        }
-        if( !isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['options'] ) ) {
-            $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['options'] = array('defaultLifetime' => 3600);
-        }
-        if( !isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['groups'] ) ) {
-            $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['groups'] = array('pages');
-        }
+
+        $cacheConfigurations[$extKey]['frontend'] ??= VariableFrontend::class;
+        $cacheConfigurations[$extKey]['options'] ??= ['defaultLifetime' => 3600];
+        $cacheConfigurations[$extKey]['groups'] ??= ['pages'];
 
 
 
@@ -60,7 +60,7 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['HGON']['HgonPayment']['writerConfiguration']
         // add a FileWriter
         \TYPO3\CMS\Core\Log\Writer\FileWriter::class => array(
             // configuration for the writer
-            'logFile' => 'typo3temp/logs/tx_hgonpayment.log'
+            'logFile' => 'var/log/tx_hgonpayment.log'
         )
     ),
 );
