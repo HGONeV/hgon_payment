@@ -110,6 +110,24 @@
             <trans-unit id="templates_email_confirmationPayPalAdmin.text2">
                 <source>Please find below the details of your contribution.</source>
             </trans-unit>
+            <trans-unit id="payment.title.paypal">
+                <source>PayPal</source>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.success.title">
+                <source>Payment successful</source>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.success.message">
+                <source>The PayPal payment was recorded successfully. Your registration is now confirmed.</source>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.redirect.title">
+                <source>Redirecting to PayPal</source>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.redirect.message">
+                <source>You are now being redirected to PayPal to complete your registration.</source>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.redirect.linkText">
+                <source>If the redirect does not start automatically, please click here.</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

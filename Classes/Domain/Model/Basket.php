@@ -1,6 +1,8 @@
 <?php
 namespace HGON\HgonPayment\Domain\Model;
 
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
+
 /***
  *
  * This file is part of the "HGON Payment" Extension for TYPO3 CMS.
@@ -42,8 +44,8 @@ class Basket extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * article
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\HGON\HgonPayment\Domain\Model\Article>
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
      */
+    #[Cascade(['value' => 'remove'])]
     protected $article = null;
 
     /**

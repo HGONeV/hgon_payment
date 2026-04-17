@@ -119,6 +119,10 @@
                 <source>thank you for your purchase.</source>
                 <target>vielen Dank für Ihren Einkauf. Sofern es sich bei der Bestellung um Sachartikel handelt, senden wir Ihnen den Artikel zeitnah zu.</target>
             </trans-unit>
+            <trans-unit id="payment.title.paypal">
+                <source>PayPal</source>
+                <target>PayPal</target>
+            </trans-unit>
             <trans-unit id="templates_email_confirmationPayPalUser.text2">
                 <source>Please find below the details of your contribution.</source>
                 <target>Untenstehend finden Sie weitere Details. Bei Rückfragen können Sie einfach direkt auf diese E-Mail antworten.</target>
@@ -144,6 +148,26 @@
             <trans-unit id="templates_email_confirmationPayPalAdmin.text2">
                 <source>Please find below the details of your contribution.</source>
                 <target>Untenstehend finden Sie weitere Details.</target>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.success.title">
+                <source>Payment successful</source>
+                <target>Zahlung erfolgreich</target>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.success.message">
+                <source>The PayPal payment was recorded successfully. Your registration is now confirmed.</source>
+                <target>Die PayPal-Zahlung wurde erfolgreich verbucht. Ihre Anmeldung ist jetzt bestätigt.</target>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.redirect.title">
+                <source>Redirecting to PayPal</source>
+                <target>Weiterleitung zu PayPal</target>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.redirect.message">
+                <source>You are now being redirected to PayPal to complete your registration.</source>
+                <target>Sie werden jetzt zu PayPal weitergeleitet, um Ihre Anmeldung abzuschließen.</target>
+            </trans-unit>
+            <trans-unit id="payment.event.paypal.redirect.linkText">
+                <source>If the redirect does not start automatically, please click here.</source>
+                <target>Falls die Weiterleitung nicht automatisch erfolgt, klicken Sie bitte hier.</target>
             </trans-unit>
 		</body>
 	</file>

@@ -32,20 +32,6 @@ plugin.tx_hgonpayment {
                     clientSecret =
                 }
             }
-            mollie {
-                # cat=plugin.tx_hgonpayment//a; type=string; label=Use live credentials. Otherwise dev
-                live = 0
-                # cat=plugin.tx_hgonpayment//a; type=int; label=Mollie app client id
-                clientId =
-                # cat=plugin.tx_hgonpayment//a; type=int; label=Mollie app secret
-                clientSecret =
-                dev {
-                    # cat=plugin.tx_hgonpayment//a; type=int; label=DEV Mollie app client id
-                    clientId =
-                    # cat=plugin.tx_hgonpayment//a; type=int; label=DEV Mollie app client id
-                    clientSecret =
-                }
-            }
             # cat=plugin.tx_hgonpayment//a; type=string; label=The URL the user is lead after cancelling payment process
             cancelUrl =
         }

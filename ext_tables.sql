@@ -189,8 +189,7 @@ CREATE TABLE tx_hgonpayment_domain_model_paypalplan (
 #
 CREATE TABLE tx_hgonpayment_domain_model_article (
 
-	tx_basket int(11) unsigned DEFAULT '0' NOT NULL,
-
+	tx_basket int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 

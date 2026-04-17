@@ -4,8 +4,10 @@ plugin.tx_hgonpayment {
 		templateRootPaths.1 = {$plugin.tx_hgonpayment.view.templateRootPath}
 		partialRootPaths.0 = EXT:hgon_donation/Resources/Private/Partials/
 		partialRootPaths.1 = {$plugin.tx_hgonpayment.view.partialRootPath}
+		partialRootPaths.1727540190 = EXT:hgon_template/Resources/Private/Extension/HgonTemplate/Partials/
 		layoutRootPaths.0 = EXT:hgon_donation/Resources/Private/Layouts/
 		layoutRootPaths.1 = {$plugin.tx_hgonpayment.view.layoutRootPath}
+		layoutRootPaths.1727540190 = EXT:hgon_template/Resources/Private/Extension/HgonTemplate/Layouts/
 	}
 	persistence {
 		storagePid = {$plugin.tx_hgonpayment.persistence.storagePid}
@@ -30,15 +32,6 @@ plugin.tx_hgonpayment {
                     clientSecret = {$plugin.tx_hgonpayment.settings.api.paypal.dev.clientSecret}
                 }
             }
-            mollie {
-                live = {$plugin.tx_hgonpayment.settings.api.mollie.live}
-                clientId = {$plugin.tx_hgonpayment.settings.api.mollie.clientId}
-                clientSecret = {$plugin.tx_hgonpayment.settings.api.mollie.clientSecret}
-                dev {
-                    clientId = {$plugin.tx_hgonpayment.settings.api.mollie.dev.clientId}
-                    clientSecret = {$plugin.tx_hgonpayment.settings.api.mollie.dev.clientSecret}
-                }
-            }
             cancelUrl = {$plugin.tx_hgonpayment.settings.api.cancelUrl}
         }
         orderPid = {$plugin.tx_hgonpayment.settings.orderPid}
@@ -51,3 +44,8 @@ plugin.tx_hgonpayment {
 
 plugin.tx_hgonpayment_order < plugin.tx_hgonpayment
 
+# Legacy list_type fallback (pre-migration)
+tt_content.list.20 {
+    hgonpayment_order < tt_content.hgonpayment_order
+    hgonpayment_subscription < tt_content.hgonpayment_subscription
+}

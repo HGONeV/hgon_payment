@@ -1,5 +1,6 @@
 <?php
 
+use HGON\HgonPayment\Payment\Paypal;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 
 defined('TYPO3') or die("Access denied.");
@@ -17,7 +18,8 @@ call_user_func(
             // non-cacheable actions
             [
                 \HGON\HgonPayment\Controller\PayPalController::class => 'confirmPayment, executePayment, finishedPayment'
-            ]
+            ],
+            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -29,7 +31,8 @@ call_user_func(
             // non-cacheable actions
             [
                 \HGON\HgonPayment\Controller\PayPalController::class => 'confirmSubscription, executeSubscription, finishedSubscription'
-            ]
+            ],
+            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
 
 
@@ -50,6 +53,12 @@ call_user_func(
     },
     'hgon_payment'
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sf_event_mgt']['paymentMethods']['paypal'] = [
+    'class' => Paypal::class,
+    'extkey' => 'hgon_payment',
+];
+unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sf_event_mgt']['paymentMethods']['invoice']);
 
 // set logger
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['HGON']['HgonPayment']['writerConfiguration'] = array(

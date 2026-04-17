@@ -38,7 +38,7 @@ class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
         $payPalDataArray['payment']['type'] = 'PayPal Payment';
         $payPalDataArray['payment']['amount']['value'] = $basket->getTotal();
 
-        $payPalDataArray['customer']['id'] = $payPalPayment->id;
+        $payPalDataArray['customer']['id'] = (string)($payPalPayment->{'id'} ?? '');
         $payPalDataArray['customer']['name'] = $payPalPayment->payer->payer_info->first_name . ' ' . $payPalPayment->payer->payer_info->last_name;
         $payPalDataArray['customer']['email'] = $payPalPayment->payer->payer_info->email;
         $payPalDataArray['customer']['address']['recipientName'] = $payPalPayment->payer->payer_info->shipping_address->recipient_name;
@@ -106,26 +106,4 @@ class DataConverter implements \TYPO3\CMS\Core\SingletonInterface
         return $payPalDataArray;
     }
 
-
-
-    /**
-     * convert mollie subscription data to a small array
-     *
-     * @param \Mollie\Api\Resources\Subscription $mollieSubscription
-     * @param \Mollie\Api\Resources\Customer $mollieCustomer
-     * @return array
-     */
-    public function subscriptionMollie(\Mollie\Api\Resources\Subscription $mollieSubscription, \Mollie\Api\Resources\Customer $mollieCustomer)
-    {
-        $mollieDataArray = [];
-        $mollieDataArray['subscription']['type'] = 'Mollie';
-        $mollieDataArray['subscription']['amount']['value'] = $mollieSubscription->amount->value;
-        $mollieDataArray['subscription']['startDate'] = $mollieSubscription->startDate;
-
-        $mollieDataArray['customer']['id'] = $mollieCustomer->id;
-        $mollieDataArray['customer']['name'] = $mollieCustomer->name;
-        $mollieDataArray['customer']['email'] = $mollieCustomer->email;
-
-        return $mollieDataArray;
-    }
 }

@@ -1,0 +1,11 @@
+# cat=basic//a; type=boolean; label=PayPal Sandbox aktivieren
+sandbox = 1
+
+# cat=basic//a; type=string; label=PayPal Client ID
+clientId =
+
+# cat=basic//a; type=string; label=PayPal Client Secret
+clientSecret =
+
+# cat=basic//a; type=string; label=Brand-Name fuer PayPal Checkout
+brandName = HGON

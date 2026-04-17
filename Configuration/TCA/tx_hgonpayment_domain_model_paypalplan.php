@@ -1,17 +1,15 @@
 <?php
 defined('TYPO3') or die("Access denied.");
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_hgonpayment_domain_model_paypalplan', 'EXT:hgon_template/Resources/Private/Language/locallang_csh_tx_hgonpayment_domain_model_paypalplan.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_hgonpayment_domain_model_paypalplan');
 $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalplan'] = [
 	'ctrl' => [
 	    'hideTable' => true,
 		'title'	=> 'LLL:EXT:hgon_payment/Resources/Private/Language/locallang_db.xlf:tx_hgonpayment_domain_model_paypalplan',
 		'label' => 'description',
 		'label_alt' => 'title',
+        'rootLevel' => 0,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
 
 		'languageField' => 'sys_language_uid',
@@ -32,18 +30,11 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalplan'] = [
 	],
 	'columns' => [
 
-		'sys_language_uid' => [
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
-			'config' => [
-				'type' => 'select',
-				'renderType' => 'selectSingle',
-				'foreign_table' => 'sys_language',
-				'foreign_table_where' => 'ORDER BY sys_language.title',
-				'items' => [
-					['LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1],
-					['LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0]
-                ],
+        'sys_language_uid' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'language',
             ],
         ],
 		'l10n_parent' => [
@@ -52,8 +43,11 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalplan'] = [
 			'config' => [
 				'type' => 'select',
 				'renderType' => 'selectSingle',
-				'items' => [
-					['', 0],
+                'items' => [
+                    [
+                        'label' => '',
+                        'value' => 0,
+                    ],
                 ],
 				'foreign_table' => 'tx_hgonpayment_domain_model_paypalplan',
 				'foreign_table_where' => 'AND tx_hgonpayment_domain_model_paypalplan.pid=###CURRENT_PID### AND tx_hgonpayment_domain_model_paypalplan.sys_language_uid IN (-1,0)',
@@ -96,7 +90,8 @@ $GLOBALS['TCA']['tx_hgonpayment_domain_model_paypalplan'] = [
                 ],
                 'cols' => 40,
                 'rows' => 15,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true
             ],
         ],
         'plan_id' => [

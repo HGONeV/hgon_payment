@@ -7,3 +7,38 @@ services:
   HGON\HgonPayment\:
     resource: '../Classes/*'
 
+  HGON\HgonPayment\EventListener\InitializePayPalPaymentListener:
+    tags:
+      - name: event.listener
+        identifier: 'hgon-payment/paypal-initialize'
+        event: DERHANSEN\SfEventMgt\Event\ProcessPaymentInitializeEvent
+
+  HGON\HgonPayment\EventListener\SuccessfulPayPalPaymentListener:
+    tags:
+      - name: event.listener
+        identifier: 'hgon-payment/paypal-success'
+        event: DERHANSEN\SfEventMgt\Event\ProcessPaymentSuccessEvent
+
+  HGON\HgonPayment\EventListener\AllowRepeatedPayPalSuccessActionListener:
+    tags:
+      - name: event.listener
+        identifier: 'hgon-payment/allow-repeated-paypal-success-action'
+        event: DERHANSEN\SfEventMgt\Event\ProceedWithPaymentActionEvent
+
+  HGON\HgonPayment\EventListener\FailedPayPalPaymentListener:
+    tags:
+      - name: event.listener
+        identifier: 'hgon-payment/paypal-failure'
+        event: DERHANSEN\SfEventMgt\Event\ProcessPaymentFailureEvent
+
+  HGON\HgonPayment\EventListener\CancelledPayPalPaymentListener:
+    tags:
+      - name: event.listener
+        identifier: 'hgon-payment/paypal-cancel'
+        event: DERHANSEN\SfEventMgt\Event\ProcessPaymentCancelEvent
+
+  HGON\HgonPayment\EventListener\MarkPendingPaidRegistrationsListener:
+    tags:
+      - name: event.listener
+        identifier: 'hgon-payment/mark-pending-paid-registrations'
+        event: DERHANSEN\SfEventMgt\Event\AfterRegistrationConfirmedEvent
