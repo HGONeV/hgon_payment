@@ -85,19 +85,19 @@
 
 
             <!-- E-Mail subjects -->
-            <trans-unit id="rkwMailService.confirmationPayPalUser.subject" approved="yes">
+            <trans-unit id="paymentMailService.confirmationPayPalUser.subject" approved="yes">
                 <source>Thank You</source>
                 <target>Vielen Dank</target>
             </trans-unit>
-            <trans-unit id="rkwMailService.confirmationPayPalAdmin.subject" approved="yes">
+            <trans-unit id="paymentMailService.confirmationPayPalAdmin.subject" approved="yes">
                 <source>New transaction</source>
                 <target>Neue Transaktion</target>
             </trans-unit>
-            <trans-unit id="rkwMailService.confirmationPayPalAdmin.subject.1" approved="yes">
+            <trans-unit id="paymentMailService.confirmationPayPalAdmin.subject.1" approved="yes">
                 <source>New contribution</source>
                 <target>Neue Spende</target>
             </trans-unit>
-            <trans-unit id="rkwMailService.confirmationPayPalAdmin.subject.2" approved="yes">
+            <trans-unit id="paymentMailService.confirmationPayPalAdmin.subject.2" approved="yes">
                 <source>New purchase</source>
                 <target>Artikel verkauft</target>
             </trans-unit>

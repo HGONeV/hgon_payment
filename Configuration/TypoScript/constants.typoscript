@@ -39,9 +39,7 @@ plugin.tx_hgonpayment {
         orderPid =
         # cat=plugin.tx_hgonpayment//a; type=int; label=PID of subscription page
         subscriptionPid =
-        # cat=plugin.tx_hgonpayment//a; type=int; label=the RkwAuthor which is contact person in email etc
-        rkwAuthorContactPerson =
-        # cat=plugin.tx_hgondonation//a; type=int; label=the backendUser which is contact person in email etc
+        # cat=plugin.tx_hgonpayment//a; type=int; label=Backend user contact person for payment emails
         backendUserContactPerson =
     }
 }

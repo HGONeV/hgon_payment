@@ -50,7 +50,7 @@ class PayPalPlan extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * productId
-     * the defined product id. E.g. the internal name of an RkwProject
+     * the defined PayPal product id
      *
      * @var string
      */

@@ -3,21 +3,21 @@
 
 <!-- PLAINTEXT -->
 <f:section name="Plaintext">
-<f:translate key="templates_email_confirmationPayPalUser.headline" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="HgonPayment" arguments="{0 : frontendUser.firstName, 1: frontendUser.lastName}" />
+<f:translate key="templates_email_confirmationPayPalUser.headline" languageKey="{language}" extensionName="HgonPayment" arguments="{0 : firstName, 1: lastName}" />
 
-<f:translate key="templates_email_confirmationPayPalUser.text1.{paymentData.payment.isDonation}" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="HgonPayment" />
-<f:translate key="templates_email_confirmationPayPalUser.text2" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="HgonPayment" />
+<f:translate key="templates_email_confirmationPayPalUser.text1.{paymentData.payment.isDonation}" languageKey="{language}" extensionName="HgonPayment" />
+<f:translate key="templates_email_confirmationPayPalUser.text2" languageKey="{language}" extensionName="HgonPayment" />
 <f:render partial="Email/DetailsPayment" section="Plaintext" arguments="{_all}"/>
 </f:section>
 
 <!-- HTML -->
 <f:section name="Html">
-	<h1><f:translate key="templates_email_confirmationPayPalUser.headline" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="HgonPayment" arguments="{0 : frontendUser.firstName, 1: frontendUser.lastName}" /></h1>
+	<h1><f:translate key="templates_email_confirmationPayPalUser.headline" languageKey="{language}" extensionName="HgonPayment" arguments="{0 : firstName, 1: lastName}" /></h1>
 	<p>
-		<f:translate key="templates_email_confirmationPayPalUser.text1.{paymentData.payment.isDonation}" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="HgonPayment" /><br>
+		<f:translate key="templates_email_confirmationPayPalUser.text1.{paymentData.payment.isDonation}" languageKey="{language}" extensionName="HgonPayment" /><br>
     </p>
     <p>
-		<f:translate key="templates_email_confirmationPayPalUser.text2" languageKey="{frontendUser.txRkwregistrationLanguageKey}" extensionName="HgonPayment" />
+		<f:translate key="templates_email_confirmationPayPalUser.text2" languageKey="{language}" extensionName="HgonPayment" />
 	</p>
 	<f:render partial="Email/DetailsPayment" section="Html" arguments="{_all}"/>
 </f:section>

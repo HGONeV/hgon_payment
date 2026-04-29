@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use HGON\HgonPayment\Helper\DataConverter;
-use HGON\HgonPayment\Service\RkwMailService;
+use HGON\HgonPayment\Service\PaymentMailService;
 
 /**
  * PayPalController
@@ -249,12 +249,6 @@ class PayPalController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     private function sendMails($result, $basket): void
     {
-        // Falls $frontendUser bei dir aktuell auskommentiert ist, muss es trotzdem existieren
-        // (ansonsten knallt confirmPayPalUser()).
-        // Wenn du es wirklich nicht nutzen willst: RkwMailService entsprechend anpassen.
-        /** @var \RKW\RkwRegistration\Domain\Model\FrontendUser|null $frontendUser */
-        $frontendUser = $frontendUser ?? null;
-
         /** @var DataConverter $dataConverter */
         $dataConverter = GeneralUtility::makeInstance(DataConverter::class);
 
@@ -265,9 +259,9 @@ class PayPalController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $paymentData = $dataConverter->paymentPayPal($result, $basket);
         }
 
-        /** @var RkwMailService $rkwMailService */
-        $rkwMailService = GeneralUtility::makeInstance(RkwMailService::class);
-        $rkwMailService->confirmPayPalUser($frontendUser, $paymentData);
+        /** @var PaymentMailService $paymentMailService */
+        $paymentMailService = GeneralUtility::makeInstance(PaymentMailService::class);
+        $paymentMailService->confirmPayPalUser($paymentData);
 
         /** @var BackendUserRepository $backendUserRepository */
         $backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class);
@@ -276,7 +270,7 @@ class PayPalController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($backendUserId > 0) {
             $backendUser = $backendUserRepository->findByIdentifier($backendUserId);
             if ($backendUser instanceof BackendUser) {
-                $rkwMailService->confirmPayPalAdmin($backendUser, $paymentData, $frontendUser);
+                $paymentMailService->confirmPayPalAdmin($backendUser, $paymentData);
             }
         }
     }

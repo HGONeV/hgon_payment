@@ -70,11 +70,17 @@
 
 
             <!-- E-Mail subjects -->
-            <trans-unit id="rkwMailService.confirmationPayPalUser.subject" approved="yes">
+            <trans-unit id="paymentMailService.confirmationPayPalUser.subject" approved="yes">
                 <source>Thank You</source>
             </trans-unit>
-            <trans-unit id="rkwMailService.confirmationPayPalAdmin.subject" approved="yes">
+            <trans-unit id="paymentMailService.confirmationPayPalAdmin.subject" approved="yes">
                 <source>New contribution</source>
+            </trans-unit>
+            <trans-unit id="paymentMailService.confirmationPayPalAdmin.subject.1" approved="yes">
+                <source>New contribution</source>
+            </trans-unit>
+            <trans-unit id="paymentMailService.confirmationPayPalAdmin.subject.2" approved="yes">
+                <source>New purchase</source>
             </trans-unit>
 
             <!-- Templates/Email/ConfirmationUser.html -->

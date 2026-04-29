@@ -7,6 +7,9 @@ services:
   HGON\HgonPayment\:
     resource: '../Classes/*'
 
+  HGON\HgonPayment\Service\PaymentMailService:
+    public: true
+
   HGON\HgonPayment\EventListener\InitializePayPalPaymentListener:
     tags:
       - name: event.listener
