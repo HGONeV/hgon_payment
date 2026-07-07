@@ -21,6 +21,8 @@ plugin.tx_hgonpayment {
             paypal {
                 live = {$plugin.tx_hgonpayment.settings.api.paypal.live}
                 apiUrl = https://api.paypal.com
+                hostedButtonId = {$plugin.tx_hgonpayment.settings.api.paypal.hostedButtonId}
+                business = {$plugin.tx_hgonpayment.settings.api.paypal.business}
                 clientId = {$plugin.tx_hgonpayment.settings.api.paypal.clientId}
                 clientSecret = {$plugin.tx_hgonpayment.settings.api.paypal.clientSecret}
                 dev {
