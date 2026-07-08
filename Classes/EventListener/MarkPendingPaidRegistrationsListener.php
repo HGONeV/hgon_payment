@@ -7,6 +7,9 @@ namespace HGON\HgonPayment\EventListener;
 use DERHANSEN\SfEventMgt\Domain\Repository\RegistrationRepository;
 use DERHANSEN\SfEventMgt\Event\AfterRegistrationConfirmedEvent;
 
+/**
+ * Normalizes newly confirmed paid registrations before payment is completed.
+ */
 final class MarkPendingPaidRegistrationsListener
 {
     public function __construct(
@@ -14,6 +17,9 @@ final class MarkPendingPaidRegistrationsListener
     ) {
     }
 
+    /**
+     * Marks PayPal and transfer registrations as unpaid until payment settles.
+     */
     public function __invoke(AfterRegistrationConfirmedEvent $event): void
     {
         $registration = $event->getRegistration();

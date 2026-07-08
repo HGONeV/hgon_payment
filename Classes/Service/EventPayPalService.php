@@ -5,26 +5,37 @@ declare(strict_types=1);
 namespace HGON\HgonPayment\Service;
 
 use DERHANSEN\SfEventMgt\Domain\Model\Registration;
-use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Http\RequestFactory;
+use HGON\HgonPayment\PayPal\PayPalCheckoutClient;
+use HGON\HgonPayment\PayPal\PayPalConfiguration;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
+/**
+ * Coordinates PayPal payments for sf_event_mgt registrations.
+ *
+ * The service intentionally contains event-domain decisions only. PayPal HTTP
+ * communication and credentials live in the PayPal namespace.
+ */
 final class EventPayPalService
 {
     private const METHOD = 'paypal';
 
     public function __construct(
-        private readonly RequestFactory $requestFactory,
-        private readonly ExtensionConfiguration $extensionConfiguration,
+        private readonly PayPalCheckoutClient $payPalClient,
+        private readonly PayPalConfiguration $payPalConfiguration,
     ) {
     }
 
+    /**
+     * Checks whether this service should handle the selected payment method.
+     */
     public function supports(string $paymentMethod): bool
     {
         return $paymentMethod === self::METHOD;
     }
 
+    /**
+     * Creates the PayPal order and returns redirect HTML for sf_event_mgt.
+     */
     public function initializePayment(
         Registration $registration,
         string $successUrl,
@@ -35,7 +46,7 @@ final class EventPayPalService
 
         try {
             $order = $this->createOrder($registration, $successUrl, $cancelUrl, $failureUrl);
-            $approveUrl = $this->extractApproveUrl($order);
+            $approveUrl = $this->payPalClient->extractApproveUrl($order);
             $orderId = (string)($order['id'] ?? '');
 
             if ($approveUrl === '' || $orderId === '') {
@@ -59,6 +70,9 @@ final class EventPayPalService
         }
     }
 
+    /**
+     * Captures a successful PayPal order and updates the registration state.
+     */
     public function confirmSuccessfulPayment(Registration $registration, array $queryParameters): array
     {
         if ($registration->getPaid()) {
@@ -86,8 +100,8 @@ final class EventPayPalService
         }
 
         try {
-            $capture = $this->captureOrder($orderId);
-            $captureId = $this->extractCaptureId($capture);
+            $capture = $this->payPalClient->captureOrder($orderId);
+            $captureId = $this->payPalClient->extractCaptureId($capture);
             $status = strtoupper((string)($capture['status'] ?? ''));
 
             if (!in_array($status, ['COMPLETED', 'APPROVED'], true)) {
@@ -119,6 +133,9 @@ final class EventPayPalService
         }
     }
 
+    /**
+     * Marks a registration as unpaid after a PayPal failure callback.
+     */
     public function markPaymentFailed(Registration $registration): array
     {
         $registration->setPaid(false);
@@ -132,6 +149,9 @@ final class EventPayPalService
         ];
     }
 
+    /**
+     * Marks a registration as unpaid after the user cancelled at PayPal.
+     */
     public function markPaymentCancelled(Registration $registration): array
     {
         $registration->setPaid(false);
@@ -145,6 +165,9 @@ final class EventPayPalService
         ];
     }
 
+    /**
+     * Builds the PayPal order payload for an event registration.
+     */
     private function createOrder(
         Registration $registration,
         string $successUrl,
@@ -170,225 +193,19 @@ final class EventPayPalService
                 ],
             ]],
             'application_context' => [
-                'brand_name' => $this->getConfigValue('brandName', 'HGON'),
+                'brand_name' => $this->payPalConfiguration->getBrandName(),
                 'user_action' => 'PAY_NOW',
                 'return_url' => $successUrl,
                 'cancel_url' => $cancelUrl,
             ],
         ];
 
-        $response = $this->request(
-            'POST',
-            $this->getApiBaseUrl() . '/v2/checkout/orders',
-            $payload
-        );
-
-        $statusCode = $response->getStatusCode();
-        $body = $this->decodeResponse($response);
-
-        if ($statusCode < 200 || $statusCode >= 300) {
-            throw new \RuntimeException($this->buildApiErrorMessage($body, $statusCode));
-        }
-
-        return $body;
+        return $this->payPalClient->createOrder($payload);
     }
 
-    private function captureOrder(string $orderId): array
-    {
-        $response = $this->request(
-            'POST',
-            $this->getApiBaseUrl() . '/v2/checkout/orders/' . rawurlencode($orderId) . '/capture',
-            new \stdClass()
-        );
-
-        $statusCode = $response->getStatusCode();
-        $body = $this->decodeResponse($response);
-
-        if ($statusCode < 200 || $statusCode >= 300) {
-            throw new \RuntimeException($this->buildApiErrorMessage($body, $statusCode));
-        }
-
-        return $body;
-    }
-
-    private function request(string $method, string $url, array|\stdClass|null $payload = null): ResponseInterface
-    {
-        $headers = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->getAccessToken(),
-        ];
-
-        $options = [
-            'headers' => $headers,
-            'allow_redirects' => false,
-        ];
-
-        if ($payload !== null) {
-            $options['body'] = json_encode($payload, JSON_THROW_ON_ERROR);
-        }
-
-        return $this->requestFactory->request($url, $method, $options);
-    }
-
-    private function getAccessToken(): string
-    {
-        $clientId = $this->getRequiredConfigValue('clientId');
-        $clientSecret = $this->getRequiredConfigValue('clientSecret');
-
-        $response = $this->requestFactory->request(
-            $this->getApiBaseUrl() . '/v1/oauth2/token',
-            'POST',
-            [
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Accept-Language' => 'de_DE',
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                    'Authorization' => 'Basic ' . base64_encode($clientId . ':' . $clientSecret),
-                ],
-                'body' => 'grant_type=client_credentials',
-                'allow_redirects' => false,
-            ]
-        );
-
-        $statusCode = $response->getStatusCode();
-        $body = $this->decodeResponse($response);
-        $accessToken = (string)($body['access_token'] ?? '');
-
-        if ($statusCode < 200 || $statusCode >= 300 || $accessToken === '') {
-            throw new \RuntimeException($this->buildApiErrorMessage($body, $statusCode));
-        }
-
-        return $accessToken;
-    }
-
-    private function decodeResponse(ResponseInterface $response): array
-    {
-        $body = (string)$response->getBody();
-
-        if ($body === '') {
-            return [];
-        }
-
-        try {
-            $decoded = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $exception) {
-            throw new \RuntimeException('Die Antwort von PayPal konnte nicht gelesen werden.', 0, $exception);
-        }
-
-        return is_array($decoded) ? $decoded : [];
-    }
-
-    private function extractApproveUrl(array $order): string
-    {
-        foreach (($order['links'] ?? []) as $link) {
-            if (($link['rel'] ?? '') === 'approve' && is_string($link['href'] ?? null)) {
-                return $link['href'];
-            }
-        }
-
-        return '';
-    }
-
-    private function extractCaptureId(array $capture): string
-    {
-        $purchaseUnits = $capture['purchase_units'] ?? [];
-        $firstPurchaseUnit = is_array($purchaseUnits) ? ($purchaseUnits[0] ?? []) : [];
-        $payments = is_array($firstPurchaseUnit) ? ($firstPurchaseUnit['payments'] ?? []) : [];
-        $captures = is_array($payments) ? ($payments['captures'] ?? []) : [];
-        $firstCapture = is_array($captures) ? ($captures[0] ?? []) : [];
-
-        return is_array($firstCapture) ? (string)($firstCapture['id'] ?? '') : '';
-    }
-
-    private function buildApiErrorMessage(array $body, int $statusCode): string
-    {
-        $parts = [];
-
-        if (($body['message'] ?? '') !== '') {
-            $parts[] = (string)$body['message'];
-        }
-
-        if (($body['error_description'] ?? '') !== '') {
-            $parts[] = (string)$body['error_description'];
-        }
-
-        if (($body['details'][0]['description'] ?? '') !== '') {
-            $parts[] = (string)$body['details'][0]['description'];
-        }
-
-        $message = trim(implode(' ', $parts));
-
-        if ($message === '') {
-            $message = 'PayPal lieferte keinen verwertbaren Fehlertext.';
-        }
-
-        return sprintf('%s (HTTP %d)', $message, $statusCode);
-    }
-
-    private function getApiBaseUrl(): string
-    {
-        if ($this->isSandboxEnabled()) {
-            return 'https://api-m.sandbox.paypal.com';
-        }
-
-        return 'https://api-m.paypal.com';
-    }
-
-    private function isSandboxEnabled(): bool
-    {
-        return filter_var($this->getConfigValue('sandbox', true), FILTER_VALIDATE_BOOL);
-    }
-
-    private function getRequiredConfigValue(string $key): string
-    {
-        $value = trim((string)$this->getConfigValue($key, ''));
-
-        if ($value === '') {
-            throw new \RuntimeException(sprintf('Die Extension-Konfiguration "hgon_payment.%s" ist leer.', $key));
-        }
-
-        return $value;
-    }
-
-    private function getConfigValue(string $key, mixed $default = null): mixed
-    {
-        $environmentValue = $this->getEnvironmentConfigValue($key);
-        if ($environmentValue !== null) {
-            return $environmentValue;
-        }
-
-        try {
-            $configuration = $this->extensionConfiguration->get('hgon_payment');
-        } catch (\Throwable) {
-            $configuration = [];
-        }
-
-        return $configuration[$key] ?? $default;
-    }
-
-    private function getEnvironmentConfigValue(string $key): ?string
-    {
-        $environmentKey = match ($key) {
-            'brandName' => 'HGON_PAYMENT_PAYPAL_BRAND_NAME',
-            'clientId' => 'HGON_PAYMENT_PAYPAL_CLIENT_ID',
-            'clientSecret' => 'HGON_PAYMENT_PAYPAL_CLIENT_SECRET',
-            'sandbox' => 'HGON_PAYMENT_PAYPAL_SANDBOX',
-            default => '',
-        };
-
-        if ($environmentKey === '') {
-            return null;
-        }
-
-        $value = getenv($environmentKey);
-        if ($value === false || trim((string)$value) === '') {
-            return null;
-        }
-
-        return (string)$value;
-    }
-
+    /**
+     * Renders the immediate redirect page returned to sf_event_mgt.
+     */
     private function renderRedirectHtml(string $approveUrl): string
     {
         $escapedUrl = htmlspecialchars($approveUrl, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -430,6 +247,9 @@ window.setTimeout(function () {
 HTML;
     }
 
+    /**
+     * Renders the final success message after PayPal capture.
+     */
     private function renderSuccessHtml(): string
     {
         $headline = htmlspecialchars($this->getSuccessTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -463,16 +283,25 @@ HTML;
 HTML;
     }
 
+    /**
+     * Returns the translated success headline.
+     */
     private function getSuccessTitle(): string
     {
         return $this->translate('payment.event.paypal.success.title', 'Payment successful');
     }
 
+    /**
+     * Returns the translated redirect headline.
+     */
     private function getRedirectTitle(): string
     {
         return $this->translate('payment.event.paypal.redirect.title', 'Redirecting to PayPal');
     }
 
+    /**
+     * Returns the translated redirect body text.
+     */
     private function getRedirectMessage(): string
     {
         return $this->translate(
@@ -481,6 +310,9 @@ HTML;
         );
     }
 
+    /**
+     * Returns the translated manual redirect link text.
+     */
     private function getRedirectLinkText(): string
     {
         return $this->translate(
@@ -489,6 +321,9 @@ HTML;
         );
     }
 
+    /**
+     * Returns the translated success body text.
+     */
     private function getSuccessMessage(): string
     {
         return $this->translate(
@@ -497,6 +332,9 @@ HTML;
         );
     }
 
+    /**
+     * Translates a label and falls back if no localization is available.
+     */
     private function translate(string $key, string $fallback): string
     {
         $translation = LocalizationUtility::translate($key, 'hgon_payment');
@@ -504,6 +342,9 @@ HTML;
         return is_string($translation) && $translation !== '' ? $translation : $fallback;
     }
 
+    /**
+     * Renders an error block for payment failures and API errors.
+     */
     private function renderErrorHtml(string $headline, string $detail): string
     {
         $escapedHeadline = htmlspecialchars($headline, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -517,6 +358,9 @@ HTML;
 HTML;
     }
 
+    /**
+     * Shortens PayPal descriptions to API limits without breaking UTF-8.
+     */
     private function truncate(string $value, int $maxLength): string
     {
         if (mb_strlen($value) <= $maxLength) {

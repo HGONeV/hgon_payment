@@ -7,6 +7,9 @@ namespace HGON\HgonPayment\EventListener;
 use DERHANSEN\SfEventMgt\Event\ProcessPaymentFailureEvent;
 use HGON\HgonPayment\Service\EventPayPalService;
 
+/**
+ * Handles sf_event_mgt payment failures for PayPal registrations.
+ */
 final class FailedPayPalPaymentListener
 {
     public function __construct(
@@ -14,6 +17,9 @@ final class FailedPayPalPaymentListener
     ) {
     }
 
+    /**
+     * Keeps the registration unpaid and displays the failure message.
+     */
     public function __invoke(ProcessPaymentFailureEvent $event): void
     {
         if (!$this->eventPayPalService->supports($event->getPaymentMethod())) {

@@ -7,6 +7,9 @@ namespace HGON\HgonPayment\EventListener;
 use DERHANSEN\SfEventMgt\Event\ProcessPaymentCancelEvent;
 use HGON\HgonPayment\Service\EventPayPalService;
 
+/**
+ * Handles users returning from a cancelled PayPal checkout.
+ */
 final class CancelledPayPalPaymentListener
 {
     public function __construct(
@@ -14,6 +17,9 @@ final class CancelledPayPalPaymentListener
     ) {
     }
 
+    /**
+     * Keeps the registration unpaid and displays the cancellation message.
+     */
     public function __invoke(ProcessPaymentCancelEvent $event): void
     {
         if (!$this->eventPayPalService->supports($event->getPaymentMethod())) {

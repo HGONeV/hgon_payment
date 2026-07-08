@@ -4,17 +4,21 @@ namespace HGON\HgonPayment\Api;
 use HGON\HgonPayment\Domain\Model\PayPalProduct;
 use HGON\HgonPayment\Domain\Repository\PayPalPlanRepository;
 use HGON\HgonPayment\Domain\Repository\PayPalProductRepository;
+use HGON\HgonPayment\PayPal\PayPalConfiguration;
 use HGON\HgonTemplate\Utility\Common;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Service\ImageService;
 
 /**
- * Created by PhpStorm.
- * User: Maximilian Fäßler
+ * Legacy facade for the old donation/subscription PayPal integration.
+ *
+ * The old flow still owns basket, product and subscription calls, but it now
+ * resolves credentials through the shared PayPal configuration service.
  */
 class PayPalApi
 {
@@ -105,28 +109,18 @@ class PayPalApi
 
 
     /**
-     * Constructor
-     *
+     * Initializes the legacy API client with shared PayPal credentials.
      */
     public function __construct()
     {
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $this->cache = GeneralUtility::makeInstance(CacheManager::class)->getCache($this->cacheIdentifier);
-
-        $settings = $this->getSettings();
+        $payPalConfiguration = new PayPalConfiguration(GeneralUtility::makeInstance(ExtensionConfiguration::class));
 
         $this->context = \TYPO3\CMS\Core\Core\Environment::getContext();
-
-        // live app or develop
-        if ($settings['api']['paypal']['live']) {
-            $this->host = $settings['api']['paypal']['apiUrl'];
-            $this->clientId = $settings['api']['paypal']['clientId'];
-            $this->clientSecret = $settings['api']['paypal']['clientSecret'];
-        } else {
-            $this->host = $settings['api']['paypal']['dev']['apiUrl'];
-            $this->clientId = $settings['api']['paypal']['dev']['clientId'];
-            $this->clientSecret = $settings['api']['paypal']['dev']['clientSecret'];
-        }
+        $this->host = $payPalConfiguration->getLegacyApiBaseUrl();
+        $this->clientId = $payPalConfiguration->getClientId();
+        $this->clientSecret = $payPalConfiguration->getClientSecret();
 
         if (
             false &&

@@ -10,6 +10,9 @@ use DERHANSEN\SfEventMgt\Utility\MessageType;
 use HGON\HgonPayment\Service\EventPayPalService;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
+/**
+ * Captures successful PayPal payments and sends sf_event_mgt notifications.
+ */
 final class SuccessfulPayPalPaymentListener
 {
     public function __construct(
@@ -19,6 +22,9 @@ final class SuccessfulPayPalPaymentListener
     ) {
     }
 
+    /**
+     * Confirms the payment at PayPal and marks the registration as paid.
+     */
     public function __invoke(ProcessPaymentSuccessEvent $event): void
     {
         if (!$this->eventPayPalService->supports($event->getPaymentMethod())) {

@@ -7,6 +7,9 @@ namespace HGON\HgonPayment\EventListener;
 use DERHANSEN\SfEventMgt\Event\ProcessPaymentInitializeEvent;
 use HGON\HgonPayment\Service\EventPayPalService;
 
+/**
+ * Starts the PayPal checkout when sf_event_mgt initializes payment.
+ */
 final class InitializePayPalPaymentListener
 {
     public function __construct(
@@ -14,6 +17,9 @@ final class InitializePayPalPaymentListener
     ) {
     }
 
+    /**
+     * Replaces the default payment output with PayPal redirect markup.
+     */
     public function __invoke(ProcessPaymentInitializeEvent $event): void
     {
         if (!$this->eventPayPalService->supports($event->getPaymentMethod())) {
