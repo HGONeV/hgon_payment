@@ -18,7 +18,7 @@ plugin.tx_hgonpayment {
                 # cat=plugin.tx_hgonpayment//a; type=string; label=Use live credentials. Otherwise dev
                 live = 0
                 # cat=plugin.tx_hgonpayment//a; type=string; label=PayPal hosted button ID for donation links
-                hostedButtonId =
+                hostedButtonId = LKP6CVAGFY2FQ
                 # cat=plugin.tx_hgonpayment//a; type=string; label=PayPal business account or merchant ID for donation links fallback
                 business =
                 # cat=plugin.tx_hgonpayment//a; type=string; label=PayPal app base url
