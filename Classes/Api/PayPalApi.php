@@ -121,53 +121,81 @@ class PayPalApi
         $this->host = $payPalConfiguration->getLegacyApiBaseUrl();
         $this->clientId = $payPalConfiguration->getClientId();
         $this->clientSecret = $payPalConfiguration->getClientSecret();
+        $this->cacheDataIdentifier .= '-' . sha1($this->host . '|' . $this->clientId);
 
+        $cachedCredentials = $this->cache->get($this->cacheDataIdentifier);
         if (
-            false &&
-            $this->cache->has($this->cacheDataIdentifier)
-            && isset($this->clientCredentials->expiresInTstamp)
-            && $this->clientCredentials->expiresInTstamp < time()
+            is_object($cachedCredentials)
+            && isset($cachedCredentials->access_token, $cachedCredentials->expiresInTstamp)
+            && (int)$cachedCredentials->expiresInTstamp > time() + 60
         ) {
-            // read from cache
-            $this->clientCredentials = $this->cache->get($this->cacheDataIdentifier);
-
-
+            $this->clientCredentials = $cachedCredentials;
         } else {
             // make an API call
             try {
                 $this->cUrl = curl_init();
+                if ($this->cUrl === false) {
+                    throw new \RuntimeException('Could not initialize cURL.');
+                }
 
-                curl_setopt($this->cUrl, CURLOPT_POST, 1);
-                curl_setopt($this->cUrl, CURLOPT_POSTFIELDS, 'grant_type=client_credentials');
-                curl_setopt($this->cUrl, CURLOPT_URL, $this->host . '/v1/oauth2/token');
-                curl_setopt($this->cUrl, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($this->cUrl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                curl_setopt($this->cUrl, CURLOPT_USERPWD, $this->clientId.":".$this->clientSecret);
-                curl_setopt($this->cUrl, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Accept-Language: en_US'));
+                curl_setopt_array($this->cUrl, [
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => 'grant_type=client_credentials',
+                    CURLOPT_URL => $this->host . '/v1/oauth2/token',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+                    CURLOPT_USERPWD => $this->clientId . ':' . $this->clientSecret,
+                    CURLOPT_HTTPHEADER => ['Accept: application/json', 'Accept-Language: en_US'],
+                ]);
 
                 $result = curl_exec($this->cUrl);
-
-                if (curl_error ($this->cUrl)) {
-                    // log
-                    $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', curl_error ($this->cUrl)));
+                if ($result === false) {
+                    throw new \RuntimeException(curl_error($this->cUrl));
                 }
-                // put array with access_token, refresh_token etc into variable
-                $this->clientCredentials = json_decode($result);
-                $this->clientCredentials->expiresInTstamp = time() + $this->clientCredentials->expires_in;
-                $this->cache->set($this->cacheDataIdentifier, $this->clientCredentials);
-            } catch (\Exception $e) {
-                $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', str_replace(array("\n", "\r"), '', $e->getMessage())));
+
+                $this->clientCredentials = json_decode($result, false, 512, JSON_THROW_ON_ERROR);
+            } catch (\Throwable $e) {
+                $this->getLogger()->log(
+                    \TYPO3\CMS\Core\Log\LogLevel::ERROR,
+                    sprintf(
+                        'An error occurred while trying to connect with paypal api. Error: %s.',
+                        str_replace(["\n", "\r"], '', $e->getMessage())
+                    )
+                );
+                return;
             }
-        }
 
-        // check if we got any problem
-        if ($this->clientCredentials->error == 'invalid_client') {
+            if (isset($this->clientCredentials->error)) {
+                $errorDescription = (string)($this->clientCredentials->error_description ?? $this->clientCredentials->error);
+                $this->getLogger()->log(
+                    \TYPO3\CMS\Core\Log\LogLevel::ERROR,
+                    sprintf(
+                        'An error occurred while trying to connect with paypal api. Error: %s.',
+                        str_replace(["\n", "\r"], '', $errorDescription)
+                    )
+                );
+                return;
+            }
 
-            // log
-            $this->getLogger()->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, sprintf('An error occurred while trying to connect with paypal api. Error: %s.', str_replace(array("\n", "\r"), '', $this->clientCredentials->error_description)));
+            if (
+                !isset($this->clientCredentials->access_token, $this->clientCredentials->expires_in)
+                || (string)$this->clientCredentials->access_token === ''
+            ) {
+                $this->getLogger()->log(
+                    \TYPO3\CMS\Core\Log\LogLevel::ERROR,
+                    'PayPal authentication returned an unexpected response without an access token.'
+                );
+                return;
+            }
 
-            // return error message
-            return $this->clientCredentials;
+            $expiresIn = max(1, (int)$this->clientCredentials->expires_in);
+            $this->clientCredentials->expiresInTstamp = time() + $expiresIn;
+            $this->cache->set(
+                $this->cacheDataIdentifier,
+                $this->clientCredentials,
+                [],
+                max(1, $expiresIn - 60)
+            );
         }
 
         // create paypal profile, if not already existing
