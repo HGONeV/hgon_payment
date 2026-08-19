@@ -125,7 +125,7 @@ final class PayPalConfiguration
         $value = getenv($environmentKey);
         if ($value === false || trim((string)$value) === '') {
 
-            if ($GLOBALS['TYPO3_CONF_VARS']['HGON']['hgon_payment']['paypal'][$key] ?? null !== null) {
+            if (($GLOBALS['TYPO3_CONF_VARS']['HGON']['hgon_payment']['paypal'][$key] ?? null) !== null) {
                 return (string)$GLOBALS['TYPO3_CONF_VARS']['HGON']['hgon_payment']['paypal'][$key];
             }
 
