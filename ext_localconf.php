@@ -1,6 +1,6 @@
 <?php
 
-use HGON\HgonPayment\Payment\Paypal;
+// use HGON\HgonPayment\Payment\Paypal;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 
 defined('TYPO3') or die("Access denied.");
@@ -54,10 +54,10 @@ call_user_func(
     'hgon_payment'
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sf_event_mgt']['paymentMethods']['paypal'] = [
-    'class' => Paypal::class,
-    'extkey' => 'hgon_payment',
-];
+// $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sf_event_mgt']['paymentMethods']['paypal'] = [
+//     'class' => Paypal::class,
+//     'extkey' => 'hgon_payment',
+// ];
 unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sf_event_mgt']['paymentMethods']['invoice']);
 
 // set logger
